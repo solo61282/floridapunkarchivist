@@ -1,42 +1,136 @@
-<script>
-  const playlistId = "UU63N1yWiGhzL2E9hcfFDJoQ"; // Florida Punk Archivist uploads
-  const feedUrl = `https://www.youtube.com/feeds/videos.xml?playlist_id=${playlistId}`;
-  const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feedUrl)}`;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Hit Play — New website coming soon. Watch videos from the Florida Punk Archivist." />
+  <title>Hit Play - Coming Soon</title>
 
-  async function loadPlaylistVideos() {
-    try {
-      const response = await fetch(apiUrl);
-      const data = await response.json();
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet" />
 
-      if (!data.items) {
-        console.error("No videos found in feed:", data);
-        return;
-      }
-
-      grid.innerHTML = ""; // remove existing videos
-
-      data.items.forEach(item => {
-        const videoId = item.link.split("v=")[1];
-        
-        const div = document.createElement("div");
-        div.className = "video-item";
-
-        div.innerHTML = `
-          <iframe 
-            title="${item.title}"
-            src="https://www.youtube.com/embed/${videoId}"
-            allowfullscreen>
-          </iframe>
-        `;
-
-        grid.appendChild(div);
-      });
-
-      updateGrid(); // apply layout after loading
-    } catch (error) {
-      console.error("Error loading playlist:", error);
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
-  }
 
-  loadPlaylistVideos();
-</script>
+    body {
+      background: #000;
+      color: #fff;
+      font-family: 'Bebas Neue', Arial, sans-serif;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* HERO SECTION */
+    .hero {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+    }
+
+    .text-block {
+      text-transform: uppercase;
+      font-size: 2.5rem;
+      letter-spacing: 2px;
+      line-height: 1.1;
+    }
+
+    @media (min-width: 768px) {
+      .text-block {
+        font-size: 4.5rem;
+      }
+    }
+
+    /* VIDEOS SECTION */
+    .videos-section {
+      background: #111;
+      padding: 3rem 1rem;
+    }
+
+    .videos-section h2 {
+      font-size: 2.3rem;
+      margin-bottom: 2rem;
+    }
+
+    .filters {
+      margin-bottom: 2rem;
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .filters select {
+      font-size: 1rem;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 4px;
+      background: #222;
+      color: #fff;
+    }
+
+    .video-grid {
+      display: grid;
+      gap: 2rem;
+      width: 100%;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .video-item {
+      background: #000;
+      padding: 1rem;
+      border-radius: 10px;
+    }
+
+    iframe {
+      width: 100%;
+      height: 200px;
+      border-radius: 10px;
+      border: none;
+    }
+
+    @media (min-width: 768px) {
+      iframe {
+        height: 300px;
+      }
+    }
+
+    /* FOOTER */
+    .footer {
+      padding: 2rem 1rem;
+      font-size: 1.2rem;
+    }
+
+    .footer a {
+      color: #00aaff;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HERO SECTION -->
+  <div class="hero">
+    <div class="text-block">
+      <div>NEW</div>
+      <div>HIT PLAY WEBSITE</div>
+      <div>COMING SOON</div>
+    </div>
+  </div>
+
+  <!-- VIDEOS SECTION -->
+  <div class="videos-section">
+    <h2>VIDEOS</h2>
+
+    <!-- FILTER CONTROLS -->
+    <div class="filters">
+      <select id="viewType">
+        <option value="grid">Grid View</option>
+        <op
