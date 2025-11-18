@@ -1,50 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hit Play - Coming Soon</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hit Play - Coming Soon</title>
 
-    <!-- 2000s Pop Punk Style Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet" />
 
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        body {
-            background: #000;
-            color: #fff;
-            font-family: 'Bebas Neue', Arial, sans-serif;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
+    body {
+      background: #000;
+      color: #fff;
+      font-family: 'Bebas Neue', Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      text-align: center;
+    }
 
-        .text-block {
-            text-transform: uppercase;
-            font-size: 2.5rem;
-            letter-spacing: 2px;
-            line-height: 1.1;
-        }
+    .hero {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
-        @media (min-width: 768px) {
-            .text-block {
-                font-size: 4.5rem;
-            }
-        }
-    </style>
+    .text-block {
+      text-transform: uppercase;
+      font-size: 2.5rem;
+      letter-spacing: 2px;
+      line-height: 1.1;
+    }
+
+    @media (min-width: 768px) {
+      .text-block {
+        font-size: 4.5rem;
+      }
+    }
+
+    .videos-section {
+      padding: 2rem 1rem;
+      background: #111;
+    }
+
+    .videos-section h2 {
+      margin-bottom: 1rem;
+      font-size: 2rem;
+      text-transform: uppercase;
+    }
+
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1rem;
+    }
+
+    .video-grid iframe {
+      width: 100%;
+      height: 200px;
+      border: none;
+    }
+
+    @media (min-width: 768px) {
+      .video-grid iframe {
+        height: 300px;
+      }
+    }
+
+    .footer {
+      padding: 1rem;
+    }
+  </style>
 </head>
 <body>
+  <div class="hero">
     <div class="text-block">
-        <div>New</div>
-        <div>Hit Play Website</div>
-        <div>Coming Soon</div>
+      <div>NEW</div>
+      <div>HIT PLAY WEBSITE</div>
+      <div>COMING SOON</div>
     </div>
+  </div>
+
+  <div class="videos-section">
+    <h2>VIDEOS</h2>
+    <div class="video-grid">
+      <!-- Example video embeds from Florida Punk Archivist channel -->
+      <iframe src="https://www.youtube.com/embed/WJdZaOJPA7I" allowfullscreen></iframe> <!-- NOFX final US show :contentReference[oaicite:0]{index=0} -->
+      <iframe src="https://www.youtube.com/embed/Zpk1yvpMyGQ" allowfullscreen></iframe> <!-- Jimmy Eat World Warped Tour :contentReference[oaicite:1]{index=1} -->
+      <iframe src="https://www.youtube.com/embed/4Bp_lgDdu08" allowfullscreen></iframe> <!-- Watching Pennywise in Orlando :contentReference[oaicite:2]{index=2} -->
+      <iframe src="https://www.youtube.com/embed/QCKoSx9yPSY" allowfullscreen></iframe> <!-- Caught Inside – The Siren :contentReference[oaicite:3]{index=3} -->
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>
+      More from the <a href="https://www.youtube.com/channel/UC63N1yWiGhzL2E9hcfFDJoQ" target="_blank"
+        >Florida Punk Archivist YouTube channel</a>.
+    </p>
+  </div>
 </body>
 </html>
