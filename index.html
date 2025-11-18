@@ -1,113 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Hit Play — New website coming soon. Watch videos from the Florida Punk Archivist." />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Hit Play — Watch videos from the Florida Punk Archivist. New Hit Play website coming soon.">
   <title>Hit Play - Coming Soon</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
 
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Bebas Neue', Arial, sans-serif; background: #000; color: #fff; text-align: center; display: flex; flex-direction: column; min-height: 100vh; transition: background 0.3s, color 0.3s; }
+    header { display: flex; justify-content: space-between; align-items: center; padding: 1rem; position: relative; z-index: 10; }
+    .logo { font-size: 2.5rem; letter-spacing: 2px; }
+    .marquee { overflow: hidden; white-space: nowrap; border-top: 1px solid #444; border-bottom: 1px solid #444; background: #111; padding: 0.5rem 0; margin-bottom: 1rem; }
+    .marquee span { display: inline-block; padding-left: 100%; animation: scroll 20s linear infinite; }
+    @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
 
-    body {
-      background: #000;
-      color: #fff;
-      font-family: 'Bebas Neue', Arial, sans-serif;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
+    /* Dark mode toggle */
+    .toggle-wrapper { display: flex; align-items: center; gap: 0.5rem; }
+    .toggle-switch { position: relative; width: 50px; height: 26px; background: #555; border-radius: 13px; cursor: pointer; }
+    .toggle-switch::before { content: ''; position: absolute; top: 2px; left: 2px; width: 22px; height: 22px; background: #fff; border-radius: 50%; transition: 0.3s; }
+    .toggle-switch.active { background: #00aaff; }
+    .toggle-switch.active::before { transform: translateX(24px); }
 
-    /* HERO SECTION */
-    .hero {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 2rem;
-    }
+    /* HERO */
+    .hero { padding: 3rem 1rem; }
+    .hero .text-block { text-transform: uppercase; font-size: 3rem; letter-spacing: 2px; line-height: 1.1; }
+    @media (min-width: 768px) { .hero .text-block { font-size: 5rem; } }
 
-    .text-block {
-      text-transform: uppercase;
-      font-size: 2.5rem;
-      letter-spacing: 2px;
-      line-height: 1.1;
-    }
+    /* Featured video */
+    .featured-wrapper { padding: 2rem 1rem; }
+    .featured-wrapper iframe { width: 90%; max-width: 900px; height: 500px; border-radius: 10px; border: none; }
 
-    @media (min-width: 768px) {
-      .text-block {
-        font-size: 4.5rem;
-      }
-    }
+    /* Videos section */
+    .videos-section { background: #111; padding: 2rem 1rem; }
+    .videos-section h2 { font-size: 2rem; margin-bottom: 1.5rem; }
+    .filters { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; margin-bottom: 1rem; }
+    .year-chip { padding: 0.5rem 1rem; border-radius: 5px; cursor: pointer; border: 1px solid #555; transition: all 0.2s; }
+    .year-chip.active, .year-chip:hover { background: #00aaff; border-color: #00aaff; color: black; }
 
-    /* VIDEOS SECTION */
-    .videos-section {
-      background: #111;
-      padding: 3rem 1rem;
-    }
+    .video-grid { display: grid; gap: 1.5rem; max-width: 1300px; margin: 0 auto; grid-template-columns: 1fr; }
+    @media (min-width: 600px) { .video-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 1000px) { .video-grid { grid-template-columns: repeat(3, 1fr); } }
 
-    .videos-section h2 {
-      font-size: 2.3rem;
-      margin-bottom: 2rem;
-    }
+    .video-thumb { position: relative; cursor: pointer; border-radius: 10px; overflow: hidden; transition: transform 0.25s, box-shadow 0.25s; background: #000; }
+    .video-thumb:hover { transform: scale(1.03); box-shadow: 0 0 20px rgba(255,255,255,0.3); }
+    .video-thumb img { width: 100%; display: block; }
+    .video-thumb-title { padding: 0.5rem; font-size: 1.2rem; }
 
-    .video-grid {
-      display: grid;
-      gap: 2rem;
-      width: 100%;
-      max-width: 1400px;
-      margin: 0 auto;
-      grid-template-columns: repeat(2, 1fr);
-    }
+    .load-more-btn { margin: 2rem auto; padding: 0.7rem 2rem; font-size: 1.3rem; background: #00aaff; border: none; border-radius: 8px; color: black; cursor: pointer; transition: background 0.2s; }
+    .load-more-btn:hover { background: #0092dd; }
 
-    @media (min-width: 768px) {
-      .video-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
+    /* Footer */
+    .footer { padding: 2rem 1rem; font-size: 1.2rem; }
+    .footer a { color: #00aaff; text-decoration: none; }
 
-    .video-item {
-      background: #000;
-      padding: 1rem;
-      border-radius: 10px;
-    }
-
-    iframe {
-      width: 100%;
-      height: 200px;
-      border-radius: 10px;
-      border: none;
-    }
-
-    @media (min-width: 768px) {
-      iframe {
-        height: 300px;
-      }
-    }
-
-    /* FOOTER */
-    .footer {
-      padding: 2rem 1rem;
-      font-size: 1.2rem;
-    }
-
-    .footer a {
-      color: #00aaff;
-      text-decoration: none;
-    }
+    /* Search bar */
+    .search-bar { margin-bottom: 1rem; }
+    .search-bar input { padding: 0.5rem 1rem; font-size: 1rem; border-radius: 5px; border: none; width: 250px; max-width: 90%; }
+    
+    /* Dark mode styles */
+    body.dark { background: #111; color: #fff; }
+    body.dark .video-thumb:hover { box-shadow: 0 0 20px rgba(0,170,255,0.5); }
   </style>
 </head>
-
 <body>
 
-  <!-- HERO SECTION -->
+  <!-- HEADER -->
+  <header>
+    <div class="logo">HIT PLAY</div>
+    <div class="toggle-wrapper">
+      <label class="toggle-switch" id="darkToggle"></label>
+    </div>
+  </header>
+
+  <!-- SCROLLING MARQUEE -->
+  <div class="marquee"><span>FLORIDA PUNK ARCHIVIST – NEW VIDEOS WEEKLY – HIT PLAY</span></div>
+
+  <!-- HERO -->
   <div class="hero">
     <div class="text-block">
       <div>NEW</div>
@@ -116,12 +87,28 @@
     </div>
   </div>
 
+  <!-- FEATURED VIDEO -->
+  <div class="featured-wrapper">
+    <h2>FEATURED VIDEO</h2>
+    <div id="featuredPlayer"></div>
+  </div>
+
   <!-- VIDEOS SECTION -->
   <div class="videos-section">
     <h2>VIDEOS</h2>
 
-    <!-- AUTO POPULATED VIDEO GRID -->
+    <!-- Search -->
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Search videos...">
+    </div>
+
+    <!-- Year filters -->
+    <div class="filters" id="yearFilters"></div>
+
+    <!-- Video Grid -->
     <div id="videoGrid" class="video-grid"></div>
+
+    <button id="loadMoreBtn" class="load-more-btn">Load More</button>
   </div>
 
   <!-- FOOTER -->
@@ -132,50 +119,145 @@
     </a>
   </div>
 
-  <!-- PLAYLIST LOADER -->
+  <!-- SCRIPT -->
   <script>
-    const grid = document.getElementById("videoGrid");
-    const playlistId = "UU63N1yWiGhzL2E9hcfFDJoQ"; // Florida Punk Archivist uploads
+    const playlistId = "UU63N1yWiGhzL2E9hcfFDJoQ";
     const feedUrl = `https://www.youtube.com/feeds/videos.xml?playlist_id=${playlistId}`;
-    const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feedUrl)}`;
+    const rssApi = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feedUrl)}`;
 
-    async function loadPlaylistVideos() {
-      try {
-        const response = await fetch(apiUrl);
-        const data = await response.json();
+    const grid = document.getElementById("videoGrid");
+    const featuredPlayer = document.getElementById("featuredPlayer");
+    const loadMoreBtn = document.getElementById("loadMoreBtn");
+    const yearFilters = document.getElementById("yearFilters");
+    const searchInput = document.getElementById("searchInput");
+    const darkToggle = document.getElementById("darkToggle");
 
-        if (!data.items) {
-          console.error("RSS API returned no items:", data);
-          return;
-        }
+    let videos = [];
+    let filteredVideos = [];
+    let loadedCount = 0;
+    const batchSize = 12;
+    let years = new Set();
+    let activeYear = "all";
 
-        grid.innerHTML = "";
-
-        data.items.forEach(item => {
-          const videoId = item.guid.split(":").pop(); // FIXED — always valid
-          const title = item.title;
-
-          const div = document.createElement("div");
-          div.className = "video-item";
-
-          div.innerHTML = `
-            <iframe 
-              title="${title}"
-              src="https://www.youtube.com/embed/${videoId}"
-              allowfullscreen>
-            </iframe>
-          `;
-
-          grid.appendChild(div);
-        });
-
-      } catch (error) {
-        console.error("Failed loading videos:", error);
-      }
+    // Load dark mode preference
+    if(localStorage.getItem("darkMode") === "true") {
+      document.body.classList.add("dark");
+      darkToggle.classList.add("active");
     }
 
-    loadPlaylistVideos();
-  </script>
+    darkToggle.addEventListener("click", () => {
+      document.body.classList.toggle("dark");
+      darkToggle.classList.toggle("active");
+      localStorage.setItem("darkMode", document.body.classList.contains("dark"));
+    });
 
+    async function loadVideos() {
+      const response = await fetch(rssApi);
+      const data = await response.json();
+
+      videos = data.items.map(item => {
+        const vidId = item.guid.split(":").pop();
+        const date = new Date(item.pubDate);
+        years.add(date.getFullYear());
+        const tags = item.title.split(/\s+/).map(w => w.toLowerCase());
+        return { id: vidId, title: item.title, thumb: `https://img.youtube.com/vi/${vidId}/hqdefault.jpg`, year: date.getFullYear(), tags };
+      });
+
+      // sort years descending
+      years = Array.from(years).sort((a,b)=>b-a);
+      createYearFilters();
+      filteredVideos = [...videos];
+      loadFeatured();
+      loadMoreVideos();
+    }
+
+    function loadFeatured() {
+      const randomVideo = videos[Math.floor(Math.random() * videos.length)];
+      featuredPlayer.innerHTML = `<iframe src="https://www.youtube.com/embed/${randomVideo.id}" allowfullscreen></iframe>`;
+    }
+
+    function createYearFilters() {
+      yearFilters.innerHTML = "";
+      const allBtn = document.createElement("div");
+      allBtn.textContent = "All";
+      allBtn.className = "year-chip active";
+      allBtn.addEventListener("click", () => filterByYear("all"));
+      yearFilters.appendChild(allBtn);
+
+      years.forEach(y => {
+        const chip = document.createElement("div");
+        chip.textContent = y;
+        chip.className = "year-chip";
+        chip.addEventListener("click", () => filterByYear(y));
+        yearFilters.appendChild(chip);
+      });
+    }
+
+    function filterByYear(year) {
+      activeYear = year;
+      Array.from(yearFilters.children).forEach(c => c.classList.remove("active"));
+      Array.from(yearFilters.children).find(c => c.textContent==year || (year=="all" && c.textContent=="All")).classList.add("active");
+      applyFilters();
+    }
+
+    function applyFilters() {
+      const query = searchInput.value.toLowerCase();
+      filteredVideos = videos.filter(v => (activeYear=="all" || v.year==activeYear) && (v.title.toLowerCase().includes(query) || v.tags.some(tag=>tag.includes(query))));
+      grid.innerHTML = "";
+      loadedCount = 0;
+      loadMoreVideos();
+    }
+
+    function loadMoreVideos() {
+      const nextBatch = filteredVideos.slice(loadedCount, loadedCount+batchSize);
+      loadedCount += nextBatch.length;
+
+      nextBatch.forEach(video => {
+        const div = document.createElement("div");
+        div.className = "video-thumb";
+        div.innerHTML = `
+          <img src="${video.thumb}" alt="${video.title}" />
+          <div class="video-thumb-title">${video.title}</div>
+          <div class="bookmark" style="position:absolute;top:5px;right:5px;font-size:1.5rem;cursor:pointer;">🔖</div>
+        `;
+        const bookmark = div.querySelector(".bookmark");
+        bookmark.addEventListener("click", e => {
+          e.stopPropagation();
+          toggleBookmark(video.id, video.title);
+          updateBookmarkIcon(bookmark, video.id);
+        });
+        updateBookmarkIcon(bookmark, video.id);
+
+        div.addEventListener("click", () => {
+          div.innerHTML = `<iframe src="https://www.youtube.com/embed/${video.id}" allowfullscreen></iframe>`;
+        });
+
+        grid.appendChild(div);
+      });
+
+      loadMoreBtn.style.display = loadedCount >= filteredVideos.length ? "none" : "block";
+    }
+
+    // Watch Later
+    function getBookmarks() {
+      return JSON.parse(localStorage.getItem("watchLater")||"[]");
+    }
+    function toggleBookmark(id, title) {
+      let list = getBookmarks();
+      const exists = list.find(v=>v.id===id);
+      if(exists) list = list.filter(v=>v.id!==id);
+      else list.push({id,title});
+      localStorage.setItem("watchLater", JSON.stringify(list));
+    }
+    function updateBookmarkIcon(icon, id) {
+      const list = getBookmarks();
+      icon.textContent = list.find(v=>v.id===id) ? "📌" : "🔖";
+    }
+
+    searchInput.addEventListener("input", applyFilters);
+    loadMoreBtn.addEventListener("click", loadMoreVideos);
+
+    loadVideos();
+  </script>
 </body>
 </html>
