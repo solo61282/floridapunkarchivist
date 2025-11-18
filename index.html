@@ -58,29 +58,19 @@
       margin-bottom: 2rem;
     }
 
-    .filters {
-      margin-bottom: 2rem;
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-
-    .filters select {
-      font-size: 1rem;
-      padding: 0.5rem 1rem;
-      border: none;
-      border-radius: 4px;
-      background: #222;
-      color: #fff;
-    }
-
     .video-grid {
       display: grid;
       gap: 2rem;
       width: 100%;
       max-width: 1400px;
       margin: 0 auto;
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (min-width: 768px) {
+      .video-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
     }
 
     .video-item {
@@ -114,6 +104,7 @@
     }
   </style>
 </head>
+
 <body>
 
   <!-- HERO SECTION -->
@@ -129,21 +120,6 @@
   <div class="videos-section">
     <h2>VIDEOS</h2>
 
-    <!-- FILTER CONTROLS -->
-    <div class="filters">
-      <select id="viewType">
-        <option value="grid">Grid View</option>
-        <option value="list">List View</option>
-      </select>
-
-      <select id="columns">
-        <option value="1">1 Column</option>
-        <option value="2" selected>2 Columns</option>
-        <option value="3">3 Columns</option>
-        <option value="4">4 Columns</option>
-      </select>
-    </div>
-
     <!-- AUTO POPULATED VIDEO GRID -->
     <div id="videoGrid" class="video-grid"></div>
   </div>
@@ -156,27 +132,9 @@
     </a>
   </div>
 
-  <!-- LAYOUT SCRIPT -->
+  <!-- PLAYLIST LOADER -->
   <script>
     const grid = document.getElementById("videoGrid");
-    const viewType = document.getElementById("viewType");
-    const columns = document.getElementById("columns");
-
-    function updateGrid() {
-      if (!grid) return;
-      if (viewType.value === "list") {
-        grid.style.gridTemplateColumns = "1fr";
-      } else {
-        grid.style.gridTemplateColumns = `repeat(${columns.value}, 1fr)`;
-      }
-    }
-
-    viewType.addEventListener("change", updateGrid);
-    columns.addEventListener("change", updateGrid);
-  </script>
-
-  <!-- FIXED WORKING PLAYLIST LOADER (NO API KEY) -->
-  <script>
     const playlistId = "UU63N1yWiGhzL2E9hcfFDJoQ"; // Florida Punk Archivist uploads
     const feedUrl = `https://www.youtube.com/feeds/videos.xml?playlist_id=${playlistId}`;
     const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feedUrl)}`;
@@ -194,7 +152,7 @@
         grid.innerHTML = "";
 
         data.items.forEach(item => {
-          const videoId = item.link.split("v=")[1];
+          const videoId = item.guid.split(":").pop(); // FIXED — always valid
           const title = item.title;
 
           const div = document.createElement("div");
@@ -204,14 +162,12 @@
             <iframe 
               title="${title}"
               src="https://www.youtube.com/embed/${videoId}"
-              allowfullscreen
-            ></iframe>
+              allowfullscreen>
+            </iframe>
           `;
 
           grid.appendChild(div);
         });
-
-        updateGrid();
 
       } catch (error) {
         console.error("Failed loading videos:", error);
@@ -220,5 +176,6 @@
 
     loadPlaylistVideos();
   </script>
+
 </body>
 </html>
