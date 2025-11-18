@@ -1,141 +1,189 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hit Play - Coming Soon</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hit Play - Coming Soon</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet" />
 
-<style>
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body {
-    background:#000;
-    color:#fff;
-    font-family:'Bebas Neue', Arial, sans-serif;
-    text-align:center;
-    display:flex;
-    flex-direction:column;
-    min-height:100vh;
-  }
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-  /* HERO SECTION */
-  .hero {
-    flex:1;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    padding:2rem;
-  }
-  .text-block {
-    text-transform:uppercase;
-    font-size:2.5rem;
-    letter-spacing:2px;
-    line-height:1.1;
-  }
-  @media(min-width:768px){ .text-block{ font-size:4.5rem; } }
+    body {
+      background: #000;
+      color: #fff;
+      font-family: 'Bebas Neue', Arial, sans-serif;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
 
-  /* VIDEOS SECTION */
-  .videos-section { background:#111; padding:3rem 1rem; }
-  .videos-section h2{ font-size:2.3rem; margin-bottom:2rem; }
-  .video-grid { display:grid; gap:2rem; }
+    /* HERO SECTION */
+    .hero {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+    }
 
-  /* Responsive grid */
-  @media(max-width:599px){ .video-grid{grid-template-columns:1fr;} iframe{height:200px;} }
-  @media(min-width:600px) and (max-width:1023px){ .video-grid{grid-template-columns:repeat(2,1fr);} iframe{height:250px;} }
-  @media(min-width:1024px){ .video-grid{grid-template-columns:repeat(3,1fr);} iframe{height:300px;} }
+    .text-block {
+      text-transform: uppercase;
+      font-size: 2.5rem;
+      letter-spacing: 2px;
+      line-height: 1.1;
+    }
 
-  .video-item iframe {
-    width:100%;
-    border-radius:10px;
-    border:none;
-  }
+    @media (min-width: 768px) {
+      .text-block {
+        font-size: 4.5rem;
+      }
+    }
 
-  /* FOOTER */
-  .footer{ padding:2rem 1rem; font-size:1.2rem; }
-  .footer a{ color:#00aaff; text-decoration:none; }
-</style>
+    /* VIDEOS */
+    .videos-section {
+      background: #111;
+      padding: 3rem 1rem;
+    }
+
+    .videos-section h2 {
+      font-size: 2.3rem;
+      margin-bottom: 2rem;
+    }
+
+    .filters {
+      margin-bottom: 2rem;
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .filters select {
+      font-size: 1rem;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 4px;
+    }
+
+    .video-grid {
+      display: grid;
+      gap: 2rem;
+    }
+
+    .video-item {
+      background: #000;
+      padding: 1rem;
+      border-radius: 10px;
+    }
+
+    iframe {
+      width: 100%;
+      height: 200px;
+      border-radius: 10px;
+      border: none;
+    }
+
+    @media (min-width: 768px) {
+      iframe {
+        height: 300px;
+      }
+    }
+
+    .footer {
+      padding: 2rem 1rem;
+      font-size: 1.2rem;
+    }
+
+    .footer a {
+      color: #00aaff;
+      text-decoration: none;
+    }
+  </style>
 </head>
 <body>
 
-<div class="hero">
-  <div class="text-block">
-    <div>NEW</div>
-    <div>HIT PLAY WEBSITE</div>
-    <div>COMING SOON</div>
+  <!-- HERO SECTION -->
+  <div class="hero">
+    <div class="text-block">
+      <div>NEW</div>
+      <div>HIT PLAY WEBSITE</div>
+      <div>COMING SOON</div>
+    </div>
   </div>
-</div>
 
-<div class="videos-section">
-  <h2>VIDEOS</h2>
-  <div id="videoGrid" class="video-grid"></div>
-</div>
+  <!-- VIDEOS SECTION -->
+  <div class="videos-section">
+    <h2>VIDEOS</h2>
 
-<div class="footer">
-  More from the 
-  <a href="https://www.youtube.com/channel/UC63N1yWiGhzL2E9hcfFDJoQ" target="_blank">
-    Florida Punk Archivist
-  </a>
-</div>
+    <!-- FILTER CONTROLS -->
+    <div class="filters">
+      <select id="viewType">
+        <option value="grid">Grid View</option>
+        <option value="list">List View</option>
+      </select>
 
-<script>
-const videoGrid = document.getElementById('videoGrid');
-const channelId = 'UC63N1yWiGhzL2E9hcfFDJoQ';
+      <select id="columns">
+        <option value="1">1 Column</option>
+        <option value="2" selected>2 Columns</option>
+        <option value="3">3 Columns</option>
+        <option value="4">4 Columns</option>
+      </select>
+    </div>
 
-// Fetch YouTube RSS directly
-async function fetchVideos() {
-  try {
-    const rssUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`;
-    const res = await fetch(rssUrl);
-    const text = await res.text();
-    const parser = new DOMParser();
-    const xml = parser.parseFromString(text, "application/xml");
-    const items = xml.querySelectorAll("entry");
+    <!-- VIDEO GRID -->
+    <div id="videoGrid" class="video-grid">
+      <div class="video-item">
+        <iframe src="https://www.youtube.com/embed/WJdZaOJPA7I" allowfullscreen></iframe>
+      </div>
 
-    if(!items.length) throw new Error('No videos found');
+      <div class="video-item">
+        <iframe src="https://www.youtube.com/embed/Zpk1yvpMyGQ" allowfullscreen></iframe>
+      </div>
 
-    items.forEach(item => {
-      const link = item.querySelector("link").getAttribute("href");
-      const videoId = new URL(link).searchParams.get("v");
-      const div = document.createElement('div');
-      div.className = 'video-item';
-      div.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}?enablejsapi=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
-      videoGrid.appendChild(div);
-    });
+      <div class="video-item">
+        <iframe src="https://www.youtube.com/embed/4Bp_lgDdu08" allowfullscreen></iframe>
+      </div>
 
-    setupSinglePlay();
-  } catch(err){
-    console.error(err);
-    videoGrid.innerHTML = '<p>Unable to load videos at this time.</p>';
-  }
-}
+      <div class="video-item">
+        <iframe src="https://www.youtube.com/embed/QCKoSx9yPSY" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
 
-// Ensure only one video plays at a time
-let players = [];
-function setupSinglePlay() {
-  const tag = document.createElement('script');
-  tag.src = "https://www.youtube.com/iframe_api";
-  document.body.appendChild(tag);
-}
+  <!-- FOOTER -->
+  <div class="footer">
+    More from the 
+    <a href="https://www.youtube.com/channel/UC63N1yWiGhzL2E9hcfFDJoQ" target="_blank">
+      Florida Punk Archivist
+    </a>
+  </div>
 
-function onYouTubeIframeAPIReady() {
-  const iframes = videoGrid.querySelectorAll('iframe');
-  iframes.forEach((iframe,i)=>{
-    const player = new YT.Player(iframe,{
-      events:{
-        'onStateChange': e=>{
-          if(e.data === YT.PlayerState.PLAYING){
-            players.forEach((p,j)=>{ if(i!==j) p.pauseVideo(); });
-          }
-        }
+  <!-- SCRIPTS -->
+  <script>
+    const grid = document.getElementById("videoGrid");
+    const viewType = document.getElementById("viewType");
+    const columns = document.getElementById("columns");
+
+    function updateGrid() {
+      if (viewType.value === "list") {
+        grid.style.gridTemplateColumns = "1fr";
+      } else {
+        grid.style.gridTemplateColumns = `repeat(${columns.value}, 1fr)`;
       }
-    });
-    players.push(player);
-  });
-}
+    }
 
-fetchVideos();
-</script>
+    viewType.addEventListener("change", updateGrid);
+    columns.addEventListener("change", updateGrid);
+
+    updateGrid();
+  </script>
 
 </body>
 </html>
