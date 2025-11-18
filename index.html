@@ -133,4 +133,93 @@
     <div class="filters">
       <select id="viewType">
         <option value="grid">Grid View</option>
-        <op
+        <option value="list">List View</option>
+      </select>
+
+      <select id="columns">
+        <option value="1">1 Column</option>
+        <option value="2" selected>2 Columns</option>
+        <option value="3">3 Columns</option>
+        <option value="4">4 Columns</option>
+      </select>
+    </div>
+
+    <!-- AUTO POPULATED VIDEO GRID -->
+    <div id="videoGrid" class="video-grid"></div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    More from the 
+    <a href="https://www.youtube.com/channel/UC63N1yWiGhzL2E9hcfFDJoQ" target="_blank">
+      Florida Punk Archivist
+    </a>
+  </div>
+
+  <!-- LAYOUT SCRIPT -->
+  <script>
+    const grid = document.getElementById("videoGrid");
+    const viewType = document.getElementById("viewType");
+    const columns = document.getElementById("columns");
+
+    function updateGrid() {
+      if (!grid) return;
+      if (viewType.value === "list") {
+        grid.style.gridTemplateColumns = "1fr";
+      } else {
+        grid.style.gridTemplateColumns = `repeat(${columns.value}, 1fr)`;
+      }
+    }
+
+    viewType.addEventListener("change", updateGrid);
+    columns.addEventListener("change", updateGrid);
+  </script>
+
+  <!-- FIXED WORKING PLAYLIST LOADER (NO API KEY) -->
+  <script>
+    const playlistId = "UU63N1yWiGhzL2E9hcfFDJoQ"; // Florida Punk Archivist uploads
+    const feedUrl = `https://www.youtube.com/feeds/videos.xml?playlist_id=${playlistId}`;
+    const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feedUrl)}`;
+
+    async function loadPlaylistVideos() {
+      try {
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+
+        if (!data.items) {
+          console.error("RSS API returned no items:", data);
+          return;
+        }
+
+        grid.innerHTML = "";
+
+        data.items.forEach(item => {
+          const videoId = item.link.split("v=")[1];
+          const title = item.title;
+
+          const div = document.createElement("div");
+          div.className = "video-item";
+
+          div.innerHTML = `
+            <iframe 
+              title="${title}"
+              src="https://www.youtube.com/embed/${videoId}"
+              allowfullscreen
+            ></iframe>
+          `;
+
+          grid.appendChild(div);
+        });
+
+        updateGrid();
+
+      } catch (error) {
+        console.error("Failed loading videos:", error);
+      }
+    }
+
+    loadPlaylistVideos();
+  </script>
+
+</body>
+</html>
