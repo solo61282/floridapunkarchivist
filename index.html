@@ -35,3 +35,155 @@
 
     .text-block {
       text-transform: uppercase;
+      font-size: 2.5rem;
+      letter-spacing: 2px;
+      line-height: 1.1;
+    }
+
+    @media (min-width: 768px) {
+      .text-block {
+        font-size: 4.5rem;
+      }
+    }
+
+    /* VIDEOS */
+    .videos-section {
+      background: #111;
+      padding: 3rem 1rem;
+    }
+
+    .videos-section h2 {
+      font-size: 2.3rem;
+      margin-bottom: 2rem;
+    }
+
+    .filters {
+      margin-bottom: 2rem;
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .filters select {
+      font-size: 1rem;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 4px;
+    }
+
+    .video-grid {
+      display: grid;
+      gap: 2rem;
+    }
+
+    .video-item {
+      background: #000;
+      padding: 1rem;
+      border-radius: 10px;
+    }
+
+    iframe {
+      width: 100%;
+      height: 200px;
+      border-radius: 10px;
+      border: none;
+    }
+
+    @media (min-width: 768px) {
+      iframe {
+        height: 300px;
+      }
+    }
+
+    .footer {
+      padding: 2rem 1rem;
+      font-size: 1.2rem;
+    }
+
+    .footer a {
+      color: #00aaff;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HERO SECTION -->
+  <div class="hero">
+    <div class="text-block">
+      <div>NEW</div>
+      <div>HIT PLAY WEBSITE</div>
+      <div>COMING SOON</div>
+    </div>
+  </div>
+
+  <!-- VIDEOS SECTION -->
+  <div class="videos-section">
+    <h2>VIDEOS</h2>
+
+    <!-- FILTER CONTROLS -->
+    <div class="filters">
+      <select id="viewType">
+        <option value="grid">Grid View</option>
+        <option value="list">List View</option>
+      </select>
+
+      <select id="columns">
+        <option value="1">1 Column</option>
+        <option value="2" selected>2 Columns</option>
+        <option value="3">3 Columns</option>
+        <option value="4">4 Columns</option>
+      </select>
+    </div>
+
+    <!-- VIDEO GRID -->
+    <div id="videoGrid" class="video-grid">
+      <div class="video-item">
+        <iframe src="https://www.youtube.com/embed/WJdZaOJPA7I" allowfullscreen></iframe>
+      </div>
+
+      <div class="video-item">
+        <iframe src="https://www.youtube.com/embed/Zpk1yvpMyGQ" allowfullscreen></iframe>
+      </div>
+
+      <div class="video-item">
+        <iframe src="https://www.youtube.com/embed/4Bp_lgDdu08" allowfullscreen></iframe>
+      </div>
+
+      <div class="video-item">
+        <iframe src="https://www.youtube.com/embed/QCKoSx9yPSY" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    More from the 
+    <a href="https://www.youtube.com/channel/UC63N1yWiGhzL2E9hcfFDJoQ" target="_blank">
+      Florida Punk Archivist
+    </a>
+  </div>
+
+  <!-- SCRIPTS -->
+  <script>
+    const grid = document.getElementById("videoGrid");
+    const viewType = document.getElementById("viewType");
+    const columns = document.getElementById("columns");
+
+    function updateGrid() {
+      if (viewType.value === "list") {
+        grid.style.gridTemplateColumns = "1fr";
+      } else {
+        grid.style.gridTemplateColumns = `repeat(${columns.value}, 1fr)`;
+      }
+    }
+
+    viewType.addEventListener("change", updateGrid);
+    columns.addEventListener("change", updateGrid);
+
+    updateGrid();
+  </script>
+
+</body>
+</html>
