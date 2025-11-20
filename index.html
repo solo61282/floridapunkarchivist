@@ -167,7 +167,6 @@
         nextPageToken = data.nextPageToken || "";
 
         data.items.forEach(item => {
-          // Only show public uploaded videos (no live/upcoming)
           if (
             item.id.kind === "youtube#video" &&
             item.snippet &&
@@ -187,6 +186,11 @@
         });
 
         observeLazyVideos();
+
+        // Ensure infinite scroll works even if page is short
+        if (document.body.offsetHeight < window.innerHeight && nextPageToken) {
+          loadVideos();
+        }
 
       } catch (err) {
         console.error("Error loading videos:", err);
