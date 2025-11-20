@@ -17,15 +17,35 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      text-align: center;
     }
 
     /* HERO */
-    .hero { flex: 2; display: flex; justify-content: center; align-items: center; padding: 2rem; }
-    .hero-logo { width: 200px; max-width: 70%; opacity: 0.9; display: block; margin: 0 auto; }
+    .hero {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+    }
+
+    .hero-logo {
+      width: 200px;
+      max-width: 70%;
+      opacity: 0.9;
+      display: block;
+      margin: 0 auto;
+    }
 
     /* VIDEOS */
-    .videos-section { flex: 1; background: #111; padding: 1rem; overflow-y: auto; }
-    .videos-section h2 { font-size: 2.3rem; margin-bottom: 1rem; }
+    .videos-section {
+      background: #111;
+      padding: 1rem;
+    }
+
+    .videos-section h2 {
+      font-size: 2.3rem;
+      margin-bottom: 1rem;
+    }
 
     .video-list {
       display: grid;
@@ -47,12 +67,10 @@
       width: 100%;
       border-radius: 10px;
       transition: transform 0.3s ease, opacity 0.5s ease;
-      opacity: 0; /* start hidden for fade-in */
+      opacity: 0;
     }
 
-    .video-item.visible {
-      opacity: 1; /* fade in effect */
-    }
+    .video-item.visible { opacity: 1; }
 
     .video-thumb, iframe {
       width: 100%;
@@ -77,12 +95,6 @@
       color: rgba(255,255,255,0.85);
       pointer-events: none;
       text-shadow: 0 0 20px #000;
-      transition: transform 0.3s ease, opacity 0.3s ease;
-    }
-
-    .video-item:hover .play-overlay {
-      transform: translate(-50%, -50%) scale(1.1);
-      opacity: 1;
     }
 
     .video-title {
@@ -101,8 +113,16 @@
       background: linear-gradient(to top, rgba(0,0,0,0.7), rgba(0,0,0,0));
     }
 
-    .footer { padding: 2rem 1rem; font-size: 1.2rem; }
-    .footer a { color: #00aaff; text-decoration: none; }
+    .footer {
+      padding: 2rem 1rem;
+      font-size: 1.2rem;
+    }
+
+    .footer a {
+      color: #00aaff;
+      text-decoration: none;
+    }
+
     .footer a:hover { text-decoration: underline; }
   </style>
 </head>
