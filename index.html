@@ -124,7 +124,7 @@
   <!-- HERO -->
   <div class="hero">
     <div class="hero-content">
-      <img src="placeholder-logo.png" alt="Hit Play Logo" class="hero-logo" />
+      <img id="heroLogo" class="hero-logo" alt="Hit Play Logo" src="placeholder-logo.png" />
     </div>
   </div>
 
@@ -136,22 +136,40 @@
 
   <!-- FOOTER -->
   <div class="footer">
-    More from the 
+    Please Like And Subscribe To The
     <a href="https://www.youtube.com/channel/UC63N1yWiGhzL2E9hcfFDJoQ" target="_blank">
-      Florida Punk Archivist
+      Youtube Channel
     </a>
   </div>
 
   <!-- SCRIPT -->
   <script>
-    const API_KEY = "AIzaSyAr8RIreQq2cnTLAKJCUSaRqpvycY7-by8";   // <-- insert your API key 
+    const API_KEY = "AIzaSyAr8RIreQq2cnTLAKJCUSaRqpvycY7-by8";   // <-- insert your API key
     const CHANNEL_ID = "UC63N1yWiGhzL2E9hcfFDJoQ";
 
     let nextPageToken = "";
     let loading = false;
 
     const videoListDiv = document.getElementById("videoList");
+    const heroLogo = document.getElementById("heroLogo");
 
+    // Load channel logo dynamically
+    async function loadChannelLogo() {
+      try {
+        const res = await fetch(`https://www.googleapis.com/youtube/v3/channels?part=brandingSettings&id=${CHANNEL_ID}&key=${API_KEY}`);
+        const data = await res.json();
+        if (data.items && data.items.length > 0) {
+          const logoUrl = data.items[0].brandingSettings.image.channelProfileImageUrl;
+          heroLogo.src = logoUrl;
+        }
+      } catch (err) {
+        console.error("Error fetching channel logo:", err);
+      }
+    }
+
+    loadChannelLogo();
+
+    // Load videos
     async function loadVideos() {
       if (loading) return;
       loading = true;
@@ -186,8 +204,6 @@
         });
 
         observeLazyVideos();
-
-        // Check immediately if page is still too short
         checkIfNeedMoreVideos();
 
       } catch (err) {
@@ -197,6 +213,7 @@
       loading = false;
     }
 
+    // Lazy-load iframes
     function observeLazyVideos() {
       const lazyElements = document.querySelectorAll(".video-thumb:not([data-loaded])");
 
@@ -218,30 +235,26 @@
             observer.unobserve(img);
           }
         });
-      }, {
-        rootMargin: "200px 0px"
-      });
+      }, { rootMargin: "200px 0px" });
 
       lazyElements.forEach(el => observer.observe(el));
     }
 
+    // Infinite scroll logic
     function checkIfNeedMoreVideos() {
       if (nextPageToken && !loading && document.body.offsetHeight < window.innerHeight + 300) {
         loadVideos();
       }
     }
 
-    // Load first batch
     loadVideos();
 
-    // Infinite scroll
     window.addEventListener("scroll", () => {
       if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 300 && nextPageToken && !loading) {
         loadVideos();
       }
     });
 
-    // Also check on window resize and load
     window.addEventListener("resize", checkIfNeedMoreVideos);
     window.addEventListener("load", checkIfNeedMoreVideos);
 
