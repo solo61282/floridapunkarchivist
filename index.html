@@ -79,20 +79,20 @@ async function loadChannelData() {
       heroLogoContainer.appendChild(img);
 
       uploadsPlaylistId = channel.contentDetails.relatedPlaylists.uploads;
-      await loadVideos(); // start loading videos
-      fillViewport(); // ensure viewport is filled
+
+      // Load videos and ensure viewport is filled
+      await fillViewport();
     }
   } catch(err){ console.error(err); }
 }
-loadChannelData();
 
 // Load videos from uploads playlist
-async function loadVideos() {
+async function loadVideos(maxVideos = 10) {
   if(loading || !uploadsPlaylistId) return false;
   loading = true;
   let loadedAny = false;
 
-  const url = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${uploadsPlaylistId}&maxResults=10&pageToken=${nextPageToken}&key=${API_KEY}`;
+  const url = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${uploadsPlaylistId}&maxResults=${maxVideos}&pageToken=${nextPageToken}&key=${API_KEY}`;
   try {
     const res = await fetch(url);
     const data = await res.json();
@@ -155,10 +155,15 @@ async function loadVideos() {
   return loadedAny;
 }
 
-// Ensure enough videos to fill the viewport
+// Fill viewport with enough videos based on current columns
 async function fillViewport() {
-  while(document.body.scrollHeight < window.innerHeight && nextPageToken){
-    const loaded = await loadVideos();
+  let columns = Math.min(4, Math.floor(videoListDiv.offsetWidth / 250));
+  columns = columns || 1;
+  let rowsNeeded = Math.ceil(window.innerHeight / 200); // approx video height
+  let videosNeeded = columns * rowsNeeded;
+
+  while(videoListDiv.children.length < videosNeeded && nextPageToken){
+    const loaded = await loadVideos(videosNeeded - videoListDiv.children.length);
     if(!loaded) break;
   }
 }
@@ -169,6 +174,13 @@ window.addEventListener("scroll", async () => {
     await loadVideos();
   }
 });
+
+// Update viewport fill on resize (optional)
+window.addEventListener("resize", () => {
+  fillViewport();
+});
+
+loadChannelData();
 </script>
 
 </body>
