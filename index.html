@@ -20,35 +20,18 @@
   }
   .success { color:#4caf50; }
   .error { color:#f44336; }
-  button { 
-    margin-top:20px; 
-    padding:10px 20px; 
-    font-size:1rem; 
-    cursor:pointer; 
-    border:none; 
-    border-radius:5px;
-    background:#222; 
-    color:#fff;
-  }
-  button:hover { background:#444; }
 </style>
 </head>
 <body>
 
-<div id="status">Click "Check Status" to test YouTube API</div>
-<button id="refreshBtn">Check Status</button>
+<div id="status">Checking YouTube API...</div>
 
 <script>
   const API_KEY = "AIzaSyAr8RIreQq2cnTLAKJCUSaRqpvycY7-by8";   // <-- insert your key here
   const CHANNEL_ID = "UC63N1yWiGhzL2E9hcfFDJoQ";
-
   const statusDiv = document.getElementById("status");
-  const refreshBtn = document.getElementById("refreshBtn");
 
   async function checkYouTubeAPI() {
-    statusDiv.textContent = "Checking YouTube API...";
-    statusDiv.className = "";
-
     try {
       const res = await fetch(`https://www.googleapis.com/youtube/v3/channels?part=snippet&id=${CHANNEL_ID}&key=${API_KEY}`);
       const data = await res.json();
@@ -68,7 +51,8 @@
     }
   }
 
-  refreshBtn.addEventListener("click", checkYouTubeAPI);
+  // Automatically check API on page load
+  checkYouTubeAPI();
 </script>
 
 </body>
