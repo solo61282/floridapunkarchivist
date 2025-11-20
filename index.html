@@ -26,14 +26,14 @@
     align-items: center;
   }
 
-  /* LOGO */
-  .yt-logo {
-    width: clamp(70px, 15vw, 150px);
+  /* YOUTUBE BUTTON */
+  .yt-button {
+    width: clamp(80px, 18vw, 160px);
     margin-bottom: 1.5rem;
-    transition: transform 0.35s ease;
+    transition: transform 0.3s ease;
   }
 
-  .yt-logo:hover {
+  .yt-button:hover {
     transform: scale(1.12);
   }
 
@@ -43,10 +43,9 @@
     white-space: nowrap;      /* NEVER wrap */
     margin: 0;
 
-    /* FIX: This ALWAYS keeps it on one line */
+    /* Auto scale with screen width, no cutoff */
     font-size: min(12vw, 60px);
 
-    /* Prevent cutoff */
     max-width: 100vw;
     overflow: hidden;
   }
@@ -61,12 +60,14 @@
 
 <div class="container">
 
+  <!-- WORKING YouTube button -->
   <a href="https://www.youtube.com/channel/UC63N1yWiGhzL2E9hcfFDJoQ">
-    <img class="yt-logo"
-         src="https://www.gstatic.com/youtube/img/branding/youtubelogo/svg/youtubelogo_white.svg"
-         alt="YouTube Logo">
+    <img class="yt-button"
+      src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/YouTube_social_white_squircle_%282017%29.svg/1200px-YouTube_social_white_squircle_%282017%29.svg.png"
+      alt="YouTube Button">
   </a>
 
+  <!-- TITLE -->
   <h1>
     <a href="https://www.youtube.com/channel/UC63N1yWiGhzL2E9hcfFDJoQ">
       FLORIDA PUNK ARCHIVIST
