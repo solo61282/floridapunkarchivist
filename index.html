@@ -79,7 +79,8 @@ async function loadChannelData() {
       heroLogoContainer.appendChild(img);
 
       uploadsPlaylistId = channel.contentDetails.relatedPlaylists.uploads;
-      loadVideos(); // start loading videos once we have the uploads playlist
+      await loadVideos(); // start loading videos
+      fillViewport(); // ensure viewport is filled
     }
   } catch(err){ console.error(err); }
 }
@@ -87,8 +88,9 @@ loadChannelData();
 
 // Load videos from uploads playlist
 async function loadVideos() {
-  if(loading || !uploadsPlaylistId) return;
+  if(loading || !uploadsPlaylistId) return false;
   loading = true;
+  let loadedAny = false;
 
   const url = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${uploadsPlaylistId}&maxResults=10&pageToken=${nextPageToken}&key=${API_KEY}`;
   try {
@@ -109,11 +111,9 @@ async function loadVideos() {
         <div class="video-title">${title}</div>
       `;
       videoListDiv.appendChild(container);
-
       const img = container.querySelector(".video-thumb");
       lazyObserver.observe(img);
 
-      // Click to play
       container.addEventListener("click", () => {
         const iframe = document.createElement("iframe");
         iframe.src = `https://www.youtube.com/embed/${vid}?autoplay=1`;
@@ -145,16 +145,28 @@ async function loadVideos() {
           if(preview) preview.remove();
         });
       }
+
+      loadedAny = true;
     });
 
   } catch(err){ console.error(err); }
+
   loading = false;
+  return loadedAny;
+}
+
+// Ensure enough videos to fill the viewport
+async function fillViewport() {
+  while(document.body.scrollHeight < window.innerHeight && nextPageToken){
+    const loaded = await loadVideos();
+    if(!loaded) break;
+  }
 }
 
 // Infinite scroll
-window.addEventListener("scroll", () => {
+window.addEventListener("scroll", async () => {
   if(window.innerHeight + window.scrollY >= document.body.offsetHeight-300 && nextPageToken && !loading){
-    loadVideos();
+    await loadVideos();
   }
 });
 </script>
