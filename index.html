@@ -22,17 +22,19 @@
 
     /* HERO SECTION */
     .hero {
-      flex: 1;
       display: flex;
       justify-content: center;
       align-items: center;
       padding: 2rem;
+      min-height: 200px; /* ensures hero section is always visible */
     }
 
     .hero-logo {
       width: 200px;
       max-width: 70%;
       opacity: 0.9;
+      display: block;
+      margin: 0 auto;
     }
 
     /* VIDEO SECTION */
@@ -152,12 +154,19 @@
         if (data.items && data.items.length > 0) {
           const logoUrl = data.items[0].brandingSettings.image.channelProfileImageUrl;
 
-          // Insert logo image into hero container
           const img = document.createElement("img");
           img.src = logoUrl;
           img.alt = "Channel Logo";
           img.className = "hero-logo";
-          heroLogoContainer.appendChild(img);
+
+          // Append only after fully loaded
+          img.onload = () => {
+            heroLogoContainer.appendChild(img);
+          };
+
+          img.onerror = () => {
+            console.error("Failed to load channel logo");
+          };
         }
       } catch (err) {
         console.error("Error fetching channel logo:", err);
