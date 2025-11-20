@@ -22,37 +22,50 @@
   a {
     color: #fff;
     text-decoration: none;
-    white-space: nowrap; /* prevents text from wrapping */
+    white-space: nowrap; /* prevent wrapping */
   }
 
   h1 {
     text-transform: uppercase;
     letter-spacing: 2px;
     margin-top: 1rem;
-    font-size: clamp(2rem, 6vw, 5rem); /* responsive font size */
+    font-size: clamp(1.5rem, 10vw, 5rem); /* responsive text */
+    width: 100%;
+    text-align: center;
   }
 
-  img {
-    width: clamp(80px, 20vw, 200px); /* responsive width */
-    height: auto;
+  /* Logo scales exactly with text height */
+  .logo {
+    height: 1em; /* matches the h1 font size */
+    width: auto;
     margin-bottom: 1rem;
-    transition: transform 0.3s ease; /* subtle hover effect */
+    transition: transform 0.3s ease;
+    display: block;
   }
 
-  img:hover {
-    transform: scale(1.05); /* slight zoom on hover */
+  .logo:hover {
+    transform: scale(1.05);
+  }
+
+  /* Keep logo and text together */
+  .hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 </style>
 </head>
 <body>
 
-<!-- Clickable YouTube logo -->
-<a href="https://www.youtube.com/channel/UC63N1yWiGhzL2E9hcfFDJoQ">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" alt="YouTube Logo">
-</a>
+<div class="hero">
+  <!-- Clickable YouTube logo -->
+  <a href="https://www.youtube.com/channel/UC63N1yWiGhzL2E9hcfFDJoQ">
+    <img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" alt="YouTube Logo">
+  </a>
 
-<!-- Clickable channel text -->
-<h1><a href="https://www.youtube.com/channel/UC63N1yWiGhzL2E9hcfFDJoQ">FLORIDA PUNK ARCHIVIST</a></h1>
+  <!-- Clickable channel text -->
+  <h1><a href="https://www.youtube.com/channel/UC63N1yWiGhzL2E9hcfFDJoQ">FLORIDA PUNK ARCHIVIST</a></h1>
+</div>
 
 </body>
 </html>
