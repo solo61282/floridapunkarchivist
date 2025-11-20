@@ -66,6 +66,8 @@
       padding: 1rem;
       border-radius: 10px;
       transition: transform 0.25s ease, box-shadow 0.25s ease;
+      position: relative;
+      overflow: hidden;
     }
 
     .video-item:hover {
@@ -73,11 +75,32 @@
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
     }
 
+    .video-thumb {
+      width: 100%;
+      border-radius: 10px;
+      display: block;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      opacity: 0.85;
+    }
+
+    .play-overlay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 4rem;
+      color: rgba(255, 255, 255, 0.85);
+      pointer-events: none;
+      text-shadow: 0 0 20px #000;
+    }
+
     iframe {
       width: 100%;
-      aspect-ratio: 16 / 9;
+      aspect-ratio: 16/9;
       border-radius: 10px;
       border: none;
+      display: block;
     }
 
     .footer {
@@ -107,7 +130,6 @@
   <!-- VIDEOS -->
   <div class="videos-section">
     <h2>VIDEOS</h2>
-
     <div id="videoList" class="video-list"></div>
   </div>
 
@@ -119,9 +141,9 @@
     </a>
   </div>
 
-  <!-- SCRIPT: Infinite Scroll Loader -->
+  <!-- SCRIPT -->
   <script>
-    const API_KEY = "AIzaSyAr8RIreQq2cnTLAKJCUSaRqpvycY7-by8";   // <-- INSERT YOUR NEW KEY HERE
+    const API_KEY = "YOUR_NEW_API_KEY_HERE";   // <-- insert your API key
     const CHANNEL_ID = "UC63N1yWiGhzL2E9hcfFDJoQ";
 
     let nextPageToken = "";
@@ -141,21 +163,25 @@
       try {
         const response = await fetch(url);
         const data = await response.json();
-
         nextPageToken = data.nextPageToken || "";
 
         data.items.forEach(item => {
           if (item.id.videoId) {
-            const videoId = item.id.videoId;
+            const vid = item.id.videoId;
+            const thumb = item.snippet.thumbnails.high.url;
 
-            const videoElement = document.createElement("div");
-            videoElement.classList.add("video-item");
-            videoElement.innerHTML = `
-              <iframe src="https://www.youtube.com/embed/${videoId}" allowfullscreen></iframe>
+            const container = document.createElement("div");
+            container.classList.add("video-item");
+            container.innerHTML = `
+              <img class="video-thumb" data-videoid="${vid}" src="${thumb}" alt="">
+              <div class="play-overlay">▶</div>
             `;
-            videoListDiv.appendChild(videoElement);
+
+            videoListDiv.appendChild(container);
           }
         });
+
+        observeLazyVideos();
 
       } catch (err) {
         console.error("Error loading videos:", err);
@@ -164,15 +190,42 @@
       loading = false;
     }
 
-    // Load the first group of videos
+    // Lazy load iframes when thumbnails appear on screen
+    function observeLazyVideos() {
+      const lazyElements = document.querySelectorAll(".video-thumb:not([data-loaded])");
+
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const img = entry.target;
+            const videoId = img.dataset.videoid;
+
+            // Replace thumbnail with the iframe
+            const iframe = document.createElement("iframe");
+            iframe.src = `https://www.youtube.com/embed/${videoId}`;
+            iframe.allowFullscreen = true;
+
+            const wrapper = img.parentElement;
+            wrapper.innerHTML = "";
+            wrapper.appendChild(iframe);
+
+            img.dataset.loaded = "true";
+            observer.unobserve(img);
+          }
+        });
+      }, {
+        rootMargin: "200px 0px" // preload a bit before scrolling into view
+      });
+
+      lazyElements.forEach(el => observer.observe(el));
+    }
+
+    // Load first set
     loadVideos();
 
     // Infinite scroll
     window.addEventListener("scroll", () => {
-      const scrollPos = window.innerHeight + window.scrollY;
-      const bottom = document.body.offsetHeight - 300;
-
-      if (scrollPos >= bottom && nextPageToken && !loading) {
+      if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 300 && nextPageToken && !loading) {
         loadVideos();
       }
     });
