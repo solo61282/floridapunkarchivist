@@ -3,57 +3,36 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>YouTube API Test</title>
+<title>Florida Punk Archivist</title>
 <style>
-  body { 
-    display:flex; 
-    flex-direction:column;
-    justify-content:center; 
-    align-items:center; 
-    height:100vh; 
-    background:#000; 
-    color:#fff; 
-    font-family:Arial,sans-serif; 
-    font-size:1.8rem; 
-    text-align:center;
-    padding:1rem;
+  body {
+    background-color: #000;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+    margin: 0;
   }
-  .success { color:#4caf50; }
-  .error { color:#f44336; }
+
+  h1 {
+    text-transform: uppercase;
+    font-size: 3rem;
+    letter-spacing: 2px;
+  }
+
+  @media (min-width: 768px) {
+    h1 {
+      font-size: 5rem;
+    }
+  }
 </style>
 </head>
 <body>
 
-<div id="status">Checking YouTube API...</div>
-
-<script>
-  const API_KEY = "AIzaSyAr8RIreQq2cnTLAKJCUSaRqpvycY7-by8";   // <-- insert your key here
-  const CHANNEL_ID = "UC63N1yWiGhzL2E9hcfFDJoQ";
-  const statusDiv = document.getElementById("status");
-
-  async function checkYouTubeAPI() {
-    try {
-      const res = await fetch(`https://www.googleapis.com/youtube/v3/channels?part=snippet&id=${CHANNEL_ID}&key=${API_KEY}`);
-      const data = await res.json();
-
-      if (res.ok && data.items && data.items.length > 0) {
-        statusDiv.textContent = "Success ✅ YouTube API is working!";
-        statusDiv.className = "success";
-      } else {
-        const errorMsg = data.error?.message || "Unknown error";
-        statusDiv.textContent = `Unsuccessful ❌: ${errorMsg}`;
-        statusDiv.className = "error";
-      }
-    } catch (err) {
-      console.error(err);
-      statusDiv.textContent = `Unsuccessful ❌: ${err.message}`;
-      statusDiv.className = "error";
-    }
-  }
-
-  // Automatically check API on page load
-  checkYouTubeAPI();
-</script>
+<h1>FLORIDA PUNK ARCHIVIST</h1>
 
 </body>
 </html>
