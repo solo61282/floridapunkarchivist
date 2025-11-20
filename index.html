@@ -53,21 +53,43 @@
       margin-bottom: 2rem;
     }
 
+    /* Responsive video grid */
     .video-list {
-      display: flex;
-      flex-direction: column;
-      gap: 2rem;
-      max-width: 900px;
+      display: grid;
+      gap: 1rem;
+      max-width: 1200px;
       margin: 0 auto;
+      grid-template-columns: 1fr; /* default 1 column */
+    }
+
+    /* Tablets / small desktops */
+    @media (min-width: 600px) {
+      .video-list {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    /* Portrait on small phones */
+    @media (max-width: 599px) and (orientation: portrait) {
+      .video-list {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    /* Landscape on small phones */
+    @media (max-width: 599px) and (orientation: landscape) {
+      .video-list {
+        grid-template-columns: repeat(3, 1fr);
+      }
     }
 
     .video-item {
       background: #000;
-      padding: 1rem;
+      padding: 0.5rem;
       border-radius: 10px;
-      transition: transform 0.25s ease, box-shadow 0.25s ease;
       position: relative;
       overflow: hidden;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
     }
 
     .video-item:hover {
@@ -143,7 +165,7 @@
 
   <!-- SCRIPT -->
   <script>
-    const API_KEY = "AIzaSyAr8RIreQq2cnTLAKJCUSaRqpvycY7-by8";   // <-- insert your API key
+    const API_KEY = "YOUR_NEW_API_KEY_HERE";   // <-- insert your API key
     const CHANNEL_ID = "UC63N1yWiGhzL2E9hcfFDJoQ";
 
     let nextPageToken = "";
