@@ -1,63 +1,288 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>YouTube API Test</title>
-<style>
-  body { 
-    display:flex; 
-    justify-content:center; 
-    align-items:center; 
-    height:100vh; 
-    background:#000; 
-    color:#fff; 
-    font-family:Arial,sans-serif; 
-    font-size:1.8rem; 
-    text-align:center;
-    padding:1rem;
-  }
-  .success { color:#4caf50; }
-  .error { color:#f44336; }
-  .warning { color:#ff9800; }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hit Play - Videos</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet" />
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #000;
+      color: #fff;
+      font-family: 'Bebas Neue', Arial, sans-serif;
+      min-height: 100vh;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* HERO SECTION */
+    .hero {
+      flex: 2; /* two-thirds of the vertical space */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+    }
+
+    .hero-logo {
+      width: 200px;
+      max-width: 70%;
+      opacity: 0.9;
+      display: block;
+      margin: 0 auto;
+    }
+
+    /* VIDEO SECTION */
+    .videos-section {
+      flex: 1; /* one-third of the vertical space */
+      background: #111;
+      padding: 1rem;
+      overflow-y: auto; /* allow scrolling if content exceeds space */
+    }
+
+    .videos-section h2 {
+      font-size: 2.3rem;
+      margin-bottom: 1rem;
+    }
+
+    /* Responsive grid with max 4 columns */
+    .video-list {
+      display: grid;
+      gap: 1rem;
+      padding: 0 1rem;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      justify-content: center;
+    }
+
+    @media (min-width: 1024px) {
+      .video-list {
+        grid-template-columns: repeat(4, 1fr); /* max 4 columns on large screens */
+      }
+    }
+
+    .video-item {
+      background: #000;
+      padding: 1rem;
+      border-radius: 10px;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .video-item:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+    }
+
+    .video-thumb {
+      width: 100%;
+      border-radius: 10px;
+      display: block;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      opacity: 0.85;
+      transition: opacity 0.3s ease;
+    }
+
+    .play-overlay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 4rem;
+      color: rgba(255, 255, 255, 0.85);
+      pointer-events: none;
+      text-shadow: 0 0 20px #000;
+    }
+
+    iframe {
+      width: 100%;
+      aspect-ratio: 16/9;
+      border-radius: 10px;
+      border: none;
+      display: block;
+    }
+
+    iframe.preview {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+      border-radius: 10px;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    .footer {
+      padding: 2rem 1rem;
+      font-size: 1.2rem;
+    }
+
+    .footer a {
+      color: #00aaff;
+      text-decoration: none;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
 <body>
 
-<div id="status">Checking YouTube API...</div>
+  <!-- HERO -->
+  <div class="hero" id="heroLogoContainer"></div>
 
-<script>
-  const API_KEY = "AIzaSyAr8RIreQq2cnTLAKJCUSaRqpvycY7-by8";  // Replace with your key
-  const CHANNEL_ID = "UC63N1yWiGhzL2E9hcfFDJoQ"; // Example channel
+  <!-- VIDEOS -->
+  <div class="videos-section">
+    <h2>VIDEOS</h2>
+    <div id="videoList" class="video-list"></div>
+  </div>
 
-  async function checkYouTubeAPI() {
-    const statusDiv = document.getElementById("status");
-    try {
-      const res = await fetch(`https://www.googleapis.com/youtube/v3/channels?part=snippet&id=${CHANNEL_ID}&key=${API_KEY}`);
-      const data = await res.json();
+  <!-- FOOTER -->
+  <div class="footer">
+    More from the 
+    <a href="https://www.youtube.com/channel/UC63N1yWiGhzL2E9hcfFDJoQ" target="_blank">
+      Florida Punk Archivist
+    </a>
+  </div>
 
-      if (res.ok && data.items && data.items.length > 0) {
-        statusDiv.textContent = "Success ✅ YouTube API is working!";
-        statusDiv.className = "success";
-      } else {
-        const errorMsg = data.error?.message || "Unknown error";
-        if(data.error?.errors?.some(e => e.reason === "quotaExceeded")){
-          statusDiv.textContent = `Quota exceeded ⚠️: ${errorMsg}`;
-          statusDiv.className = "warning";
-        } else {
-          statusDiv.textContent = `Unsuccessful ❌: ${errorMsg}`;
-          statusDiv.className = "error";
+  <!-- SCRIPT -->
+  <script>
+    const API_KEY = "AIzaSyAr8RIreQq2cnTLAKJCUSaRqpvycY7-by8";
+    const CHANNEL_ID = "UC63N1yWiGhzL2E9hcfFDJoQ";
+
+    let nextPageToken = "";
+    let loading = false;
+
+    const videoListDiv = document.getElementById("videoList");
+    const heroLogoContainer = document.getElementById("heroLogoContainer");
+
+    // Load channel logo
+    async function loadChannelLogo() {
+      try {
+        const res = await fetch(`https://www.googleapis.com/youtube/v3/channels?part=snippet&id=${CHANNEL_ID}&key=${API_KEY}`);
+        const data = await res.json();
+        if (data.items && data.items.length > 0) {
+          const logoUrl = data.items[0].snippet.thumbnails.high.url;
+          const img = document.createElement("img");
+          img.src = logoUrl;
+          img.alt = "Channel Logo";
+          img.className = "hero-logo";
+          img.onload = () => heroLogoContainer.appendChild(img);
+          img.onerror = () => console.error("Failed to load channel logo");
         }
+      } catch (err) {
+        console.error("Error fetching channel logo:", err);
       }
-    } catch (err) {
-      console.error(err);
-      statusDiv.textContent = `Unsuccessful ❌: ${err.message}`;
-      statusDiv.className = "error";
     }
-  }
 
-  checkYouTubeAPI();
-</script>
+    loadChannelLogo();
 
+    // Load videos
+    async function loadVideos() {
+      if (loading) return;
+      loading = true;
+
+      const url = `https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&channelId=${CHANNEL_ID}&part=snippet,id&order=date&maxResults=50&pageToken=${nextPageToken}`;
+
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+        nextPageToken = data.nextPageToken || "";
+
+        data.items.forEach(item => {
+          if (item.id.kind === "youtube#video" && item.snippet && item.snippet.liveBroadcastContent === "none") {
+            const vid = item.id.videoId;
+            const thumb = item.snippet.thumbnails.high.url;
+
+            const container = document.createElement("div");
+            container.classList.add("video-item");
+            container.innerHTML = `
+              <img class="video-thumb" data-videoid="${vid}" src="${thumb}" alt="">
+              <div class="play-overlay">▶</div>
+            `;
+            videoListDiv.appendChild(container);
+
+            // Hover preview
+            addHoverPreview(container, vid);
+          }
+        });
+
+        observeLazyVideos();
+        checkIfNeedMoreVideos();
+
+      } catch (err) {
+        console.error("Error loading videos:", err);
+      }
+
+      loading = false;
+    }
+
+    // Lazy-load iframes
+    function observeLazyVideos() {
+      const lazyElements = document.querySelectorAll(".video-thumb:not([data-loaded])");
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const img = entry.target;
+            const videoId = img.dataset.videoid;
+            const iframe = document.createElement("iframe");
+            iframe.src = `https://www.youtube.com/embed/${videoId}`;
+            iframe.allowFullscreen = true;
+            const wrapper = img.parentElement;
+            wrapper.innerHTML = "";
+            wrapper.appendChild(iframe);
+            img.dataset.loaded = "true";
+            observer.unobserve(img);
+          }
+        });
+      }, { rootMargin: "200px 0px" });
+
+      lazyElements.forEach(el => observer.observe(el));
+    }
+
+    // Hover preview function
+    function addHoverPreview(videoItem, videoId) {
+      videoItem.addEventListener("mouseenter", () => {
+        if (!videoItem.querySelector("iframe.preview")) {
+          const iframe = document.createElement("iframe");
+          iframe.className = "preview";
+          iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=0&modestbranding=1&loop=1&playlist=${videoId}`;
+          videoItem.appendChild(iframe);
+        }
+      });
+      videoItem.addEventListener("mouseleave", () => {
+        const preview = videoItem.querySelector("iframe.preview");
+        if (preview) preview.remove();
+      });
+    }
+
+    // Infinite scroll logic
+    function checkIfNeedMoreVideos() {
+      if (nextPageToken && !loading && document.body.offsetHeight < window.innerHeight + 300) {
+        loadVideos();
+      }
+    }
+
+    loadVideos();
+
+    window.addEventListener("scroll", () => {
+      if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 300 && nextPageToken && !loading) {
+        loadVideos();
+      }
+    });
+
+    window.addEventListener("resize", checkIfNeedMoreVideos);
+    window.addEventListener("load", checkIfNeedMoreVideos);
+
+  </script>
 </body>
 </html>
