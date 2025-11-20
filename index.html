@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hit Play - Coming Soon</title>
+  <title>Hit Play - Videos</title>
 
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet" />
 
@@ -135,10 +135,10 @@
 
   <!-- FOOTER -->
   <div class="footer">
-    Visit The
+    More from the 
     <a href="https://www.youtube.com/channel/UC63N1yWiGhzL2E9hcfFDJoQ" target="_blank">
       Florida Punk Archivist
-    </a>Youtube Channel
+    </a>
   </div>
 
   <!-- SCRIPT -->
@@ -166,7 +166,8 @@
         nextPageToken = data.nextPageToken || "";
 
         data.items.forEach(item => {
-          if (item.id.videoId) {
+          // Only show public videos
+          if (item.id.kind === "youtube#video" && item.snippet) {
             const vid = item.id.videoId;
             const thumb = item.snippet.thumbnails.high.url;
 
@@ -176,7 +177,6 @@
               <img class="video-thumb" data-videoid="${vid}" src="${thumb}" alt="">
               <div class="play-overlay">▶</div>
             `;
-
             videoListDiv.appendChild(container);
           }
         });
@@ -190,7 +190,6 @@
       loading = false;
     }
 
-    // Lazy load iframes when thumbnails appear on screen
     function observeLazyVideos() {
       const lazyElements = document.querySelectorAll(".video-thumb:not([data-loaded])");
 
@@ -200,7 +199,6 @@
             const img = entry.target;
             const videoId = img.dataset.videoid;
 
-            // Replace thumbnail with the iframe
             const iframe = document.createElement("iframe");
             iframe.src = `https://www.youtube.com/embed/${videoId}`;
             iframe.allowFullscreen = true;
@@ -214,7 +212,7 @@
           }
         });
       }, {
-        rootMargin: "200px 0px" // preload a bit before scrolling into view
+        rootMargin: "200px 0px"
       });
 
       lazyElements.forEach(el => observer.observe(el));
