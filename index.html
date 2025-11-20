@@ -45,10 +45,8 @@
       position: relative;
       overflow: hidden;
       cursor: pointer;
-      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      /* Removed hover transform and shadow */
     }
-
-    .video-item:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6); }
 
     .video-thumb {
       width: 100%;
@@ -194,13 +192,11 @@
             `;
             videoListDiv.appendChild(container);
 
-            // Hover preview for desktop
             if (window.innerWidth >= 768) {
               container.addEventListener("mouseenter", () => addHoverPreview(container, vid));
               container.addEventListener("mouseleave", () => removeHoverPreview(container));
             }
 
-            // Click to play full video
             container.addEventListener("click", () => playVideo(vid, container));
           }
         });
