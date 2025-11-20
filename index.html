@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>YouTube API Status</title>
+<title>YouTube API Test</title>
 <style>
   body { 
     display:flex; 
@@ -14,13 +14,12 @@
     background:#000; 
     color:#fff; 
     font-family:Arial,sans-serif; 
-    font-size:1.6rem; 
+    font-size:1.8rem; 
     text-align:center;
     padding:1rem;
   }
   .success { color:#4caf50; }
   .error { color:#f44336; }
-  .warning { color:#ff9800; }
   button { 
     margin-top:20px; 
     padding:10px 20px; 
@@ -32,58 +31,40 @@
     color:#fff;
   }
   button:hover { background:#444; }
-  .status-container { margin-top:1rem; display:flex; flex-direction:column; gap:0.5rem; }
 </style>
 </head>
 <body>
 
-<div class="status-container">
-  <div id="connectionStatus">Click "Check Status" to test YouTube API connection</div>
-  <div id="quotaStatus"></div>
-</div>
+<div id="status">Click "Check Status" to test YouTube API</div>
 <button id="refreshBtn">Check Status</button>
 
 <script>
-  const API_KEY = "AIzaSyAr8RIreQq2cnTLAKJCUSaRqpvycY7-by8";   // <-- insert your API key here
+  const API_KEY = "AIzaSyAr8RIreQq2cnTLAKJCUSaRqpvycY7-by8";   // <-- insert your key here
   const CHANNEL_ID = "UC63N1yWiGhzL2E9hcfFDJoQ";
 
-  const connectionDiv = document.getElementById("connectionStatus");
-  const quotaDiv = document.getElementById("quotaStatus");
+  const statusDiv = document.getElementById("status");
   const refreshBtn = document.getElementById("refreshBtn");
 
   async function checkYouTubeAPI() {
-    connectionDiv.textContent = "Checking YouTube API...";
-    connectionDiv.className = "";
-    quotaDiv.textContent = "";
-    quotaDiv.className = "";
+    statusDiv.textContent = "Checking YouTube API...";
+    statusDiv.className = "";
 
     try {
       const res = await fetch(`https://www.googleapis.com/youtube/v3/channels?part=snippet&id=${CHANNEL_ID}&key=${API_KEY}`);
       const data = await res.json();
 
-      // Connection status
       if (res.ok && data.items && data.items.length > 0) {
-        connectionDiv.textContent = "Success ✅ YouTube API is working!";
-        connectionDiv.className = "success";
+        statusDiv.textContent = "Success ✅ YouTube API is working!";
+        statusDiv.className = "success";
       } else {
         const errorMsg = data.error?.message || "Unknown error";
-        connectionDiv.textContent = `Unsuccessful ❌: ${errorMsg}`;
-        connectionDiv.className = "error";
+        statusDiv.textContent = `Unsuccessful ❌: ${errorMsg}`;
+        statusDiv.className = "error";
       }
-
-      // Quota status
-      if (data.error?.errors?.some(e => e.reason === "quotaExceeded")) {
-        quotaDiv.textContent = `Quota exceeded ⚠️: ${data.error.message}`;
-        quotaDiv.className = "warning";
-      } else if (!data.error) {
-        quotaDiv.textContent = "Quota is available ✅";
-        quotaDiv.className = "success";
-      }
-
     } catch (err) {
       console.error(err);
-      connectionDiv.textContent = `Unsuccessful ❌: ${err.message}`;
-      connectionDiv.className = "error";
+      statusDiv.textContent = `Unsuccessful ❌: ${err.message}`;
+      statusDiv.className = "error";
     }
   }
 
