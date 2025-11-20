@@ -53,12 +53,13 @@
       margin-bottom: 2rem;
     }
 
+    /* Responsive, stretch-to-fit video grid */
     .video-list {
-      display: flex;
-      flex-direction: column;
-      gap: 2rem;
-      max-width: 900px;
+      display: grid;
+      gap: 1rem;               /* small space between videos */
       margin: 0 auto;
+      padding: 0 1rem;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     }
 
     .video-item {
@@ -143,7 +144,7 @@
 
   <!-- SCRIPT -->
   <script>
-    const API_KEY = "AIzaSyAr8RIreQq2cnTLAKJCUSaRqpvycY7-by8";   // <-- insert your API key
+    const API_KEY = "AIzaSyAr8RIreQq2cnTLAKJCUSaRqpvycY7-by8";   // <-- insert your API key 
     const CHANNEL_ID = "UC63N1yWiGhzL2E9hcfFDJoQ";
 
     let nextPageToken = "";
