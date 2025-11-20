@@ -187,10 +187,8 @@
 
         observeLazyVideos();
 
-        // Auto-load next batch if page is shorter than viewport
-        if (document.body.offsetHeight < window.innerHeight && nextPageToken) {
-          loadVideos();
-        }
+        // Check immediately if page is still too short
+        checkIfNeedMoreVideos();
 
       } catch (err) {
         console.error("Error loading videos:", err);
@@ -227,6 +225,12 @@
       lazyElements.forEach(el => observer.observe(el));
     }
 
+    function checkIfNeedMoreVideos() {
+      if (nextPageToken && !loading && document.body.offsetHeight < window.innerHeight + 300) {
+        loadVideos();
+      }
+    }
+
     // Load first batch
     loadVideos();
 
@@ -236,6 +240,11 @@
         loadVideos();
       }
     });
+
+    // Also check on window resize and load
+    window.addEventListener("resize", checkIfNeedMoreVideos);
+    window.addEventListener("load", checkIfNeedMoreVideos);
+
   </script>
 
 </body>
