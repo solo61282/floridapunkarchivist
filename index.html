@@ -146,20 +146,20 @@
     const videoListDiv = document.getElementById("videoList");
     const heroLogoContainer = document.getElementById("heroLogoContainer");
 
-    // Load channel logo dynamically
+    // Load channel logo dynamically using snippet.thumbnails.high
     async function loadChannelLogo() {
       try {
-        const res = await fetch(`https://www.googleapis.com/youtube/v3/channels?part=brandingSettings&id=${CHANNEL_ID}&key=${API_KEY}`);
+        const res = await fetch(`https://www.googleapis.com/youtube/v3/channels?part=snippet&id=${CHANNEL_ID}&key=${API_KEY}`);
         const data = await res.json();
+
         if (data.items && data.items.length > 0) {
-          const logoUrl = data.items[0].brandingSettings.image.channelProfileImageUrl;
+          const logoUrl = data.items[0].snippet.thumbnails.high.url;
 
           const img = document.createElement("img");
           img.src = logoUrl;
           img.alt = "Channel Logo";
           img.className = "hero-logo";
 
-          // Append only after fully loaded
           img.onload = () => {
             heroLogoContainer.appendChild(img);
           };
