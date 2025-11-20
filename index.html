@@ -5,53 +5,63 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Florida Punk Archivist</title>
 <style>
+  /* BODY */
   body {
     background-color: #000;
     color: #fff;
     font-family: Arial, sans-serif;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    text-align: center;
     margin: 0;
     padding: 1rem;
   }
 
+  /* LINKS */
   a {
     color: #fff;
     text-decoration: none;
-    white-space: nowrap; /* prevent wrapping */
+    white-space: nowrap; /* prevent text wrapping */
+  }
+
+  /* HERO SECTION */
+  .hero {
+    display: flex;
+    flex-direction: column; /* stacked on small screens */
+    align-items: center;
+    justify-content: center;
+    gap: 0.5em; /* spacing scales with text size */
+  }
+
+  /* Inline layout for larger screens */
+  @media (min-width: 600px) {
+    .hero {
+      flex-direction: row;
+      align-items: center; /* vertical centering */
+      gap: 0.3em; /* horizontal spacing scales with font size */
+    }
   }
 
   h1 {
     text-transform: uppercase;
     letter-spacing: 2px;
-    margin-top: 1rem;
-    font-size: clamp(1.5rem, 10vw, 5rem); /* responsive text */
-    width: 100%;
-    text-align: center;
-  }
-
-  /* Logo scales exactly with text height */
-  .logo {
-    height: 1em; /* matches the h1 font size */
-    width: auto;
-    margin-bottom: 1rem;
-    transition: transform 0.3s ease;
-    display: block;
-  }
-
-  .logo:hover {
-    transform: scale(1.05);
-  }
-
-  /* Keep logo and text together */
-  .hero {
+    font-size: clamp(1.5rem, 10vw, 5rem);
+    margin: 0;
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    align-items: center; /* ensures vertical centering */
+  }
+
+  /* Logo scales with text height and has hover effect */
+  .hero img {
+    height: 1em; /* matches h1 font size */
+    width: auto;
+    display: block;
+    transition: transform 0.3s ease;
+  }
+
+  .hero img:hover {
+    transform: scale(1.05);
   }
 </style>
 </head>
