@@ -20,37 +20,12 @@
       flex-direction: column;
     }
 
-    /* HERO SECTION */
-    .hero {
-      flex: 2; /* two-thirds of the vertical space */
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 2rem;
-    }
+    .hero { flex: 2; display: flex; justify-content: center; align-items: center; padding: 2rem; }
+    .hero-logo { width: 200px; max-width: 70%; opacity: 0.9; display: block; margin: 0 auto; }
 
-    .hero-logo {
-      width: 200px;
-      max-width: 70%;
-      opacity: 0.9;
-      display: block;
-      margin: 0 auto;
-    }
+    .videos-section { flex: 1; background: #111; padding: 1rem; overflow-y: auto; }
+    .videos-section h2 { font-size: 2.3rem; margin-bottom: 1rem; }
 
-    /* VIDEO SECTION */
-    .videos-section {
-      flex: 1; /* one-third of the vertical space */
-      background: #111;
-      padding: 1rem;
-      overflow-y: auto; /* allow scrolling if content exceeds space */
-    }
-
-    .videos-section h2 {
-      font-size: 2.3rem;
-      margin-bottom: 1rem;
-    }
-
-    /* Responsive grid with max 4 columns */
     .video-list {
       display: grid;
       gap: 1rem;
@@ -60,79 +35,29 @@
     }
 
     @media (min-width: 1024px) {
-      .video-list {
-        grid-template-columns: repeat(4, 1fr); /* max 4 columns on large screens */
-      }
+      .video-list { grid-template-columns: repeat(4, 1fr); }
     }
 
     .video-item {
       background: #000;
       padding: 1rem;
       border-radius: 10px;
-      transition: transform 0.25s ease, box-shadow 0.25s ease;
       position: relative;
       overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
     }
 
-    .video-item:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
-    }
+    .video-item:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6); }
+    .video-thumb { width: 100%; border-radius: 10px; display: block; aspect-ratio: 16/9; object-fit: cover; opacity: 0.85; transition: opacity 0.3s ease; }
+    .play-overlay { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 4rem; color: rgba(255,255,255,0.85); pointer-events: none; text-shadow: 0 0 20px #000; }
 
-    .video-thumb {
-      width: 100%;
-      border-radius: 10px;
-      display: block;
-      aspect-ratio: 16/9;
-      object-fit: cover;
-      opacity: 0.85;
-      transition: opacity 0.3s ease;
-    }
+    iframe { width: 100%; aspect-ratio: 16/9; border-radius: 10px; border: none; display: block; }
+    iframe.preview { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; border-radius: 10px; pointer-events: none; z-index: 10; }
 
-    .play-overlay {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 4rem;
-      color: rgba(255, 255, 255, 0.85);
-      pointer-events: none;
-      text-shadow: 0 0 20px #000;
-    }
-
-    iframe {
-      width: 100%;
-      aspect-ratio: 16/9;
-      border-radius: 10px;
-      border: none;
-      display: block;
-    }
-
-    iframe.preview {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      border: none;
-      border-radius: 10px;
-      pointer-events: none;
-      z-index: 10;
-    }
-
-    .footer {
-      padding: 2rem 1rem;
-      font-size: 1.2rem;
-    }
-
-    .footer a {
-      color: #00aaff;
-      text-decoration: none;
-    }
-
-    .footer a:hover {
-      text-decoration: underline;
-    }
+    .footer { padding: 2rem 1rem; font-size: 1.2rem; }
+    .footer a { color: #00aaff; text-decoration: none; }
+    .footer a:hover { text-decoration: underline; }
   </style>
 </head>
 <body>
@@ -154,16 +79,18 @@
     </a>
   </div>
 
-  <!-- SCRIPT -->
+  <!-- Load YouTube IFrame API -->
+  <script src="https://www.youtube.com/iframe_api"></script>
+
   <script>
     const API_KEY = "AIzaSyAr8RIreQq2cnTLAKJCUSaRqpvycY7-by8";
     const CHANNEL_ID = "UC63N1yWiGhzL2E9hcfFDJoQ";
 
     let nextPageToken = "";
     let loading = false;
-
     const videoListDiv = document.getElementById("videoList");
     const heroLogoContainer = document.getElementById("heroLogoContainer");
+    const players = {};
 
     // Load channel logo
     async function loadChannelLogo() {
@@ -176,14 +103,10 @@
           img.src = logoUrl;
           img.alt = "Channel Logo";
           img.className = "hero-logo";
-          img.onload = () => heroLogoContainer.appendChild(img);
-          img.onerror = () => console.error("Failed to load channel logo");
+          heroLogoContainer.appendChild(img);
         }
-      } catch (err) {
-        console.error("Error fetching channel logo:", err);
-      }
+      } catch (err) { console.error("Error fetching channel logo:", err); }
     }
-
     loadChannelLogo();
 
     // Load videos
@@ -194,8 +117,8 @@
       const url = `https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&channelId=${CHANNEL_ID}&part=snippet,id&order=date&maxResults=50&pageToken=${nextPageToken}`;
 
       try {
-        const response = await fetch(url);
-        const data = await response.json();
+        const res = await fetch(url);
+        const data = await res.json();
         nextPageToken = data.nextPageToken || "";
 
         data.items.forEach(item => {
@@ -204,68 +127,84 @@
             const thumb = item.snippet.thumbnails.high.url;
 
             const container = document.createElement("div");
-            container.classList.add("video-item");
+            container.className = "video-item";
+            container.dataset.videoid = vid;
             container.innerHTML = `
-              <img class="video-thumb" data-videoid="${vid}" src="${thumb}" alt="">
+              <img class="video-thumb" src="${thumb}" alt="">
               <div class="play-overlay">▶</div>
             `;
             videoListDiv.appendChild(container);
 
-            // Hover preview
-            addHoverPreview(container, vid);
+            // Hover preview only for desktop
+            if (window.innerWidth >= 768) {
+              container.addEventListener("mouseenter", () => addHoverPreview(container, vid));
+              container.addEventListener("mouseleave", () => removeHoverPreview(container));
+            }
+
+            // Click to play full video
+            container.addEventListener("click", () => playVideo(vid, container));
           }
         });
 
         observeLazyVideos();
         checkIfNeedMoreVideos();
 
-      } catch (err) {
-        console.error("Error loading videos:", err);
-      }
+      } catch (err) { console.error("Error loading videos:", err); }
 
       loading = false;
     }
 
-    // Lazy-load iframes
     function observeLazyVideos() {
-      const lazyElements = document.querySelectorAll(".video-thumb:not([data-loaded])");
+      const lazyElements = document.querySelectorAll(".video-thumb");
       const observer = new IntersectionObserver(entries => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             const img = entry.target;
-            const videoId = img.dataset.videoid;
-            const iframe = document.createElement("iframe");
-            iframe.src = `https://www.youtube.com/embed/${videoId}`;
-            iframe.allowFullscreen = true;
-            const wrapper = img.parentElement;
-            wrapper.innerHTML = "";
-            wrapper.appendChild(iframe);
-            img.dataset.loaded = "true";
+            img.style.opacity = "1";
             observer.unobserve(img);
           }
         });
       }, { rootMargin: "200px 0px" });
-
       lazyElements.forEach(el => observer.observe(el));
     }
 
-    // Hover preview function
-    function addHoverPreview(videoItem, videoId) {
-      videoItem.addEventListener("mouseenter", () => {
-        if (!videoItem.querySelector("iframe.preview")) {
-          const iframe = document.createElement("iframe");
-          iframe.className = "preview";
-          iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=0&modestbranding=1&loop=1&playlist=${videoId}`;
-          videoItem.appendChild(iframe);
-        }
-      });
-      videoItem.addEventListener("mouseleave", () => {
-        const preview = videoItem.querySelector("iframe.preview");
-        if (preview) preview.remove();
-      });
+    // Hover preview functions
+    function addHoverPreview(container, videoId) {
+      if (container.querySelector("iframe.preview")) return;
+      const iframe = document.createElement("iframe");
+      iframe.className = "preview";
+      iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=0&modestbranding=1&loop=1&playlist=${videoId}`;
+      container.appendChild(iframe);
     }
 
-    // Infinite scroll logic
+    function removeHoverPreview(container) {
+      const preview = container.querySelector("iframe.preview");
+      if (preview) preview.remove();
+    }
+
+    // Play video with API
+    function playVideo(videoId, container) {
+      // Pause other players
+      Object.keys(players).forEach(id => players[id].pauseVideo());
+
+      // If already has a player, play it
+      if (players[videoId]) {
+        players[videoId].playVideo();
+      } else {
+        container.innerHTML = '';
+        const playerDiv = document.createElement("div");
+        playerDiv.id = `player-${videoId}`;
+        container.appendChild(playerDiv);
+
+        players[videoId] = new YT.Player(`player-${videoId}`, {
+          videoId: videoId,
+          width: '100%',
+          height: '100%',
+          playerVars: { autoplay: 1, modestbranding: 1, rel: 0 }
+        });
+      }
+    }
+
     function checkIfNeedMoreVideos() {
       if (nextPageToken && !loading && document.body.offsetHeight < window.innerHeight + 300) {
         loadVideos();
@@ -279,10 +218,10 @@
         loadVideos();
       }
     });
-
     window.addEventListener("resize", checkIfNeedMoreVideos);
     window.addEventListener("load", checkIfNeedMoreVideos);
 
+    function onYouTubeIframeAPIReady() { /* required callback */ }
   </script>
 </body>
 </html>
