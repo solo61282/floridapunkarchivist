@@ -36,16 +36,23 @@
     width: clamp(80px, 20vw, 200px); /* responsive width */
     height: auto;
     margin-bottom: 1rem;
+    transition: transform 0.3s ease; /* subtle hover effect */
+  }
+
+  img:hover {
+    transform: scale(1.05); /* slight zoom on hover */
   }
 </style>
 </head>
 <body>
 
-<!-- Generic YouTube logo -->
-<img src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" alt="YouTube Logo">
+<!-- Clickable YouTube logo -->
+<a href="https://www.youtube.com/channel/UC63N1yWiGhzL2E9hcfFDJoQ">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" alt="YouTube Logo">
+</a>
 
 <!-- Clickable channel text -->
-<h1><a href="https://www.youtube.com/channel/UC63N1yWiGhzL2E9hcfFDJoQ" target="_blank">FLORIDA PUNK ARCHIVIST</a></h1>
+<h1><a href="https://www.youtube.com/channel/UC63N1yWiGhzL2E9hcfFDJoQ">FLORIDA PUNK ARCHIVIST</a></h1>
 
 </body>
 </html>
