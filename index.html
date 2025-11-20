@@ -29,13 +29,6 @@
       padding: 2rem;
     }
 
-    .hero-content {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1.5rem;
-    }
-
     .hero-logo {
       width: 200px;
       max-width: 70%;
@@ -122,10 +115,8 @@
 <body>
 
   <!-- HERO -->
-  <div class="hero">
-    <div class="hero-content">
-      <img id="heroLogo" class="hero-logo" alt="Hit Play Logo" src="placeholder-logo.png" />
-    </div>
+  <div class="hero" id="heroLogoContainer">
+    <!-- Channel logo will be inserted here dynamically -->
   </div>
 
   <!-- VIDEOS -->
@@ -136,9 +127,9 @@
 
   <!-- FOOTER -->
   <div class="footer">
-    Please Like And Subscribe To The
+    More from the 
     <a href="https://www.youtube.com/channel/UC63N1yWiGhzL2E9hcfFDJoQ" target="_blank">
-      Youtube Channel
+      Florida Punk Archivist
     </a>
   </div>
 
@@ -151,7 +142,7 @@
     let loading = false;
 
     const videoListDiv = document.getElementById("videoList");
-    const heroLogo = document.getElementById("heroLogo");
+    const heroLogoContainer = document.getElementById("heroLogoContainer");
 
     // Load channel logo dynamically
     async function loadChannelLogo() {
@@ -160,7 +151,13 @@
         const data = await res.json();
         if (data.items && data.items.length > 0) {
           const logoUrl = data.items[0].brandingSettings.image.channelProfileImageUrl;
-          heroLogo.src = logoUrl;
+
+          // Insert logo image into hero container
+          const img = document.createElement("img");
+          img.src = logoUrl;
+          img.alt = "Channel Logo";
+          img.className = "hero-logo";
+          heroLogoContainer.appendChild(img);
         }
       } catch (err) {
         console.error("Error fetching channel logo:", err);
