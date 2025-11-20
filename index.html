@@ -16,6 +16,7 @@
     height: 100vh;
     margin: 0;
     padding: 1rem;
+    overflow-x: hidden; /* prevents horizontal cut-off */
   }
 
   /* LINKS */
@@ -28,32 +29,36 @@
   /* HERO SECTION */
   .hero {
     display: flex;
-    flex-direction: column; /* stacked on small screens */
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 0.6em;
+    max-width: 100%;
   }
 
   /* Inline layout for larger screens */
-  @media (min-width: 600px) {
+  @media (min-width: 650px) {
     .hero {
       flex-direction: row;
       gap: 0.5em;
     }
   }
 
+  /* TITLE */
   h1 {
     text-transform: uppercase;
     letter-spacing: 2px;
-    font-size: clamp(1.8rem, 9vw, 5rem);
     margin: 0;
     display: flex;
     align-items: center;
+    font-size: clamp(1.2rem, 8vw, 4rem); /* tightened to prevent cut-off */
+    max-width: 100vw; /* ensures it never exceeds screen width */
+    overflow: hidden; /* prevents cut-off overflow */
   }
 
-  /* FIXED: Logo now scales appropriately and reliably loads */
+  /* LOGO (white version) */
   .hero img {
-    height: 1.2em;      /* slightly larger than text */
+    height: 1.4em;  /* slightly larger relative to text */
     width: auto;
     display: block;
   }
@@ -67,14 +72,20 @@
 <body>
 
 <div class="hero">
-  <!-- YouTube logo that always loads reliably -->
+
+  <!-- YouTube logo in WHITE, made for dark backgrounds -->
   <a href="https://www.youtube.com/channel/UC63N1yWiGhzL2E9hcfFDJoQ">
-    <img src="https://www.gstatic.com/youtube/img/branding/youtubelogo/svg/youtubelogo.svg" 
+    <img src="https://www.gstatic.com/youtube/img/branding/youtubelogo/svg/youtubelogo_white.svg"
          alt="YouTube Logo">
   </a>
 
-  <!-- Clickable channel text -->
-  <h1><a href="https://www.youtube.com/channel/UC63N1yWiGhzL2E9hcfFDJoQ">FLORIDA PUNK ARCHIVIST</a></h1>
+  <!-- Channel name -->
+  <h1>
+    <a href="https://www.youtube.com/channel/UC63N1yWiGhzL2E9hcfFDJoQ">
+      FLORIDA PUNK ARCHIVIST
+    </a>
+  </h1>
+
 </div>
 
 </body>
