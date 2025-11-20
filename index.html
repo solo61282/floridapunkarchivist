@@ -53,41 +53,13 @@
       margin-bottom: 2rem;
     }
 
-    /* Responsive video grid */
+    /* Responsive, stretch-to-fit video grid */
     .video-list {
       display: grid;
-      gap: 1rem;
-      max-width: 1200px;
+      gap: 1rem;               /* small margin between videos */
       margin: 0 auto;
-      grid-template-columns: 1fr; /* default 1 column */
-    }
-
-    /* Tablets / small desktops */
-    @media (min-width: 600px) {
-      .video-list {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    /* Portrait on small phones */
-    @media (max-width: 599px) and (orientation: portrait) {
-      .video-list {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    /* Landscape on small phones */
-    @media (max-width: 599px) and (orientation: landscape) {
-      .video-list {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
-
-    /* Extra-large screens: desktops and 1080p+ TVs */
-    @media (min-width: 1200px) {
-      .video-list {
-        grid-template-columns: repeat(4, 1fr);
-      }
+      padding: 0 1rem;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     }
 
     .video-item {
