@@ -22,11 +22,11 @@
 
     /* HERO SECTION */
     .hero {
+      flex: 2; /* two-thirds of the vertical space */
       display: flex;
       justify-content: center;
       align-items: center;
       padding: 2rem;
-      min-height: 200px;
     }
 
     .hero-logo {
@@ -39,20 +39,21 @@
 
     /* VIDEO SECTION */
     .videos-section {
+      flex: 1; /* one-third of the vertical space */
       background: #111;
-      padding: 3rem 1rem;
+      padding: 1rem;
+      overflow-y: auto; /* allow scrolling if content exceeds space */
     }
 
     .videos-section h2 {
       font-size: 2.3rem;
-      margin-bottom: 2rem;
+      margin-bottom: 1rem;
     }
 
     /* Responsive grid */
     .video-list {
       display: grid;
-      gap: 1rem;               
-      margin: 0 auto;
+      gap: 1rem;
       padding: 0 1rem;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     }
