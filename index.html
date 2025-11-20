@@ -56,7 +56,7 @@
     /* Responsive, stretch-to-fit video grid */
     .video-list {
       display: grid;
-      gap: 1rem;               /* small space between videos */
+      gap: 1rem;               
       margin: 0 auto;
       padding: 0 1rem;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -159,7 +159,7 @@
       const url =
         `https://www.googleapis.com/youtube/v3/search?` +
         `key=${API_KEY}&channelId=${CHANNEL_ID}&part=snippet,id` +
-        `&order=date&maxResults=10&pageToken=${nextPageToken}`;
+        `&order=date&maxResults=50&pageToken=${nextPageToken}`;
 
       try {
         const response = await fetch(url);
@@ -187,7 +187,7 @@
 
         observeLazyVideos();
 
-        // Ensure infinite scroll works even if page is short
+        // Auto-load next batch if page is shorter than viewport
         if (document.body.offsetHeight < window.innerHeight && nextPageToken) {
           loadVideos();
         }
@@ -227,7 +227,7 @@
       lazyElements.forEach(el => observer.observe(el));
     }
 
-    // Load first set
+    // Load first batch
     loadVideos();
 
     // Infinite scroll
