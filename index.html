@@ -8,20 +8,16 @@
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet" />
 
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       background: #000;
       color: #fff;
       font-family: 'Bebas Neue', Arial, sans-serif;
-      display: flex;
-      flex-direction: column;
       min-height: 100vh;
       text-align: center;
+      display: flex;
+      flex-direction: column;
     }
 
     /* HERO SECTION */
@@ -46,7 +42,7 @@
       opacity: 0.9;
     }
 
-    /* VIDEOS */
+    /* VIDEO SECTION */
     .videos-section {
       background: #111;
       padding: 3rem 1rem;
@@ -57,27 +53,12 @@
       margin-bottom: 2rem;
     }
 
-    .filters {
-      margin-bottom: 2rem;
+    .video-list {
       display: flex;
-      justify-content: center;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-
-    .filters select {
-      font-size: 1rem;
-      padding: 0.5rem 1rem;
-      border: none;
-      border-radius: 4px;
-      background: #222;
-      color: #fff;
-    }
-
-    .video-grid {
-      display: grid;
+      flex-direction: column;
       gap: 2rem;
-      transition: grid-template-columns 0.3s ease;
+      max-width: 900px;
+      margin: 0 auto;
     }
 
     .video-item {
@@ -116,58 +97,18 @@
 </head>
 <body>
 
-  <!-- HERO SECTION -->
+  <!-- HERO -->
   <div class="hero">
     <div class="hero-content">
-      <img 
-        src="placeholder-logo.png" 
-        alt="Hit Play Logo" 
-        class="hero-logo"
-      />
+      <img src="placeholder-logo.png" alt="Hit Play Logo" class="hero-logo" />
     </div>
   </div>
 
-  <!-- VIDEOS SECTION -->
+  <!-- VIDEOS -->
   <div class="videos-section">
     <h2>VIDEOS</h2>
 
-    <!-- FILTER CONTROLS -->
-    <div class="filters">
-      <label>
-        <select id="viewType">
-          <option value="grid">Grid View</option>
-          <option value="list">List View</option>
-        </select>
-      </label>
-
-      <label>
-        <select id="columns">
-          <option value="1">1 Column</option>
-          <option value="2" selected>2 Columns</option>
-          <option value="3">3 Columns</option>
-          <option value="4">4 Columns</option>
-        </select>
-      </label>
-    </div>
-
-    <!-- VIDEO GRID -->
-    <div id="videoGrid" class="video-grid">
-      <div class="video-item">
-        <iframe src="https://www.youtube.com/embed/WJdZaOJPA7I" allowfullscreen></iframe>
-      </div>
-
-      <div class="video-item">
-        <iframe src="https://www.youtube.com/embed/Zpk1yvpMyGQ" allowfullscreen></iframe>
-      </div>
-
-      <div class="video-item">
-        <iframe src="https://www.youtube.com/embed/4Bp_lgDdu08" allowfullscreen></iframe>
-      </div>
-
-      <div class="video-item">
-        <iframe src="https://www.youtube.com/embed/QCKoSx9yPSY" allowfullscreen></iframe>
-      </div>
-    </div>
+    <div id="videoList" class="video-list"></div>
   </div>
 
   <!-- FOOTER -->
@@ -178,24 +119,63 @@
     </a>
   </div>
 
-  <!-- SCRIPTS -->
+  <!-- SCRIPT: Infinite Scroll Loader -->
   <script>
-    const grid = document.getElementById("videoGrid");
-    const viewType = document.getElementById("viewType");
-    const columns = document.getElementById("columns");
+    const API_KEY = "AIzaSyAr8RIreQq2cnTLAKJCUSaRqpvycY7-by8";   // <-- INSERT YOUR NEW KEY HERE
+    const CHANNEL_ID = "UC63N1yWiGhzL2E9hcfFDJoQ";
 
-    function updateGrid() {
-      if (viewType.value === "list") {
-        grid.style.gridTemplateColumns = "1fr";
-      } else {
-        grid.style.gridTemplateColumns = `repeat(${columns.value}, 1fr)`;
+    let nextPageToken = "";
+    let loading = false;
+
+    const videoListDiv = document.getElementById("videoList");
+
+    async function loadVideos() {
+      if (loading) return;
+      loading = true;
+
+      const url =
+        `https://www.googleapis.com/youtube/v3/search?` +
+        `key=${API_KEY}&channelId=${CHANNEL_ID}&part=snippet,id` +
+        `&order=date&maxResults=10&pageToken=${nextPageToken}`;
+
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+
+        nextPageToken = data.nextPageToken || "";
+
+        data.items.forEach(item => {
+          if (item.id.videoId) {
+            const videoId = item.id.videoId;
+
+            const videoElement = document.createElement("div");
+            videoElement.classList.add("video-item");
+            videoElement.innerHTML = `
+              <iframe src="https://www.youtube.com/embed/${videoId}" allowfullscreen></iframe>
+            `;
+            videoListDiv.appendChild(videoElement);
+          }
+        });
+
+      } catch (err) {
+        console.error("Error loading videos:", err);
       }
+
+      loading = false;
     }
 
-    viewType.addEventListener("change", updateGrid);
-    columns.addEventListener("change", updateGrid);
+    // Load the first group of videos
+    loadVideos();
 
-    updateGrid();
+    // Infinite scroll
+    window.addEventListener("scroll", () => {
+      const scrollPos = window.innerHeight + window.scrollY;
+      const bottom = document.body.offsetHeight - 300;
+
+      if (scrollPos >= bottom && nextPageToken && !loading) {
+        loadVideos();
+      }
+    });
   </script>
 
 </body>
