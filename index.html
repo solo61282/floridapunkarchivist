@@ -49,11 +49,69 @@
     }
 
     .video-item:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6); }
-    .video-thumb { width: 100%; border-radius: 10px; display: block; aspect-ratio: 16/9; object-fit: cover; opacity: 0.85; transition: opacity 0.3s ease; }
-    .play-overlay { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 4rem; color: rgba(255,255,255,0.85); pointer-events: none; text-shadow: 0 0 20px #000; }
+
+    .video-thumb {
+      width: 100%;
+      border-radius: 10px;
+      display: block;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      opacity: 0.85;
+      transition: opacity 0.3s ease;
+    }
+
+    .play-overlay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 4rem;
+      color: rgba(255,255,255,0.85);
+      pointer-events: none;
+      text-shadow: 0 0 20px #000;
+    }
+
+    .video-title {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      padding: 0.3rem 0.5rem;
+      background: rgba(0, 0, 0, 0.6);
+      color: #fff;
+      font-size: 0.9rem;
+      text-align: center;
+      overflow: hidden;
+      white-space: normal; /* wrap */
+      line-height: 1.2;
+      border-bottom-left-radius: 10px;
+      border-bottom-right-radius: 10px;
+      transition: background 0.3s ease, font-size 0.3s ease;
+    }
+
+    @media (min-width: 768px) {
+      .video-item:hover .video-title {
+        background: rgba(0, 0, 0, 0.8);
+        font-size: 1rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .video-title { font-size: 0.8rem; }
+    }
 
     iframe { width: 100%; aspect-ratio: 16/9; border-radius: 10px; border: none; display: block; }
-    iframe.preview { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; border-radius: 10px; pointer-events: none; z-index: 10; }
+    iframe.preview {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+      border-radius: 10px;
+      pointer-events: none;
+      z-index: 10;
+    }
 
     .footer { padding: 2rem 1rem; font-size: 1.2rem; }
     .footer a { color: #00aaff; text-decoration: none; }
@@ -132,10 +190,11 @@
             container.innerHTML = `
               <img class="video-thumb" src="${thumb}" alt="">
               <div class="play-overlay">▶</div>
+              <div class="video-title">${item.snippet.title}</div>
             `;
             videoListDiv.appendChild(container);
 
-            // Hover preview only for desktop
+            // Hover preview for desktop
             if (window.innerWidth >= 768) {
               container.addEventListener("mouseenter", () => addHoverPreview(container, vid));
               container.addEventListener("mouseleave", () => removeHoverPreview(container));
@@ -168,7 +227,6 @@
       lazyElements.forEach(el => observer.observe(el));
     }
 
-    // Hover preview functions
     function addHoverPreview(container, videoId) {
       if (container.querySelector("iframe.preview")) return;
       const iframe = document.createElement("iframe");
@@ -182,12 +240,9 @@
       if (preview) preview.remove();
     }
 
-    // Play video with API
     function playVideo(videoId, container) {
-      // Pause other players
       Object.keys(players).forEach(id => players[id].pauseVideo());
 
-      // If already has a player, play it
       if (players[videoId]) {
         players[videoId].playVideo();
       } else {
@@ -223,5 +278,6 @@
 
     function onYouTubeIframeAPIReady() { /* required callback */ }
   </script>
+
 </body>
 </html>
