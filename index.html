@@ -13,23 +13,22 @@
     margin: 0;
     display: flex;
     justify-content: center;
-    align-items: center;      /* perfect vertical centering */
+    align-items: center;
     height: 100vh;
-    text-align: center;
     overflow: hidden;
     font-family: Arial, sans-serif;
+    text-align: center;
   }
 
   .container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
   }
 
-  /* YOUTUBE LOGO */
+  /* LOGO */
   .yt-logo {
-    width: clamp(70px, 12vw, 150px);
+    width: clamp(70px, 15vw, 150px);
     margin-bottom: 1.5rem;
     transition: transform 0.35s ease;
   }
@@ -38,12 +37,18 @@
     transform: scale(1.12);
   }
 
-  /* MAIN TEXT */
+  /* TITLE */
   h1 {
     text-transform: uppercase;
-    white-space: nowrap;  /* no wrap ever */
-    font-size: clamp(1.5rem, 10vw, 6rem);
+    white-space: nowrap;      /* NEVER wrap */
     margin: 0;
+
+    /* FIX: This ALWAYS keeps it on one line */
+    font-size: min(12vw, 60px);
+
+    /* Prevent cutoff */
+    max-width: 100vw;
+    overflow: hidden;
   }
 
   a {
@@ -56,14 +61,12 @@
 
 <div class="container">
 
-  <!-- YouTube Logo (clickable) -->
   <a href="https://www.youtube.com/channel/UC63N1yWiGhzL2E9hcfFDJoQ">
     <img class="yt-logo"
          src="https://www.gstatic.com/youtube/img/branding/youtubelogo/svg/youtubelogo_white.svg"
          alt="YouTube Logo">
   </a>
 
-  <!-- Title -->
   <h1>
     <a href="https://www.youtube.com/channel/UC63N1yWiGhzL2E9hcfFDJoQ">
       FLORIDA PUNK ARCHIVIST
