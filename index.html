@@ -1,100 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Florida Punk Archivist</title>
-
-<!-- Archivo Black font -->
-<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" rel="stylesheet">
-
-<style>
-  body {
-    background: #000;
-    color: #fff;
-    margin: 0;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: 'Archivo Black', Arial, sans-serif;
-    text-align: center;
-  }
-
-  .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  /* YouTube button */
-  .yt-button {
-    width: clamp(80px, 18vw, 160px);
-    margin-bottom: 1.5rem;
-    transition: transform 0.3s ease;
-  }
-  .yt-button:hover {
-    transform: scale(1.12);
-  }
-
-  /* Title */
-  h1 {
-    white-space: nowrap;
-    margin: 0;
-    font-size: 80px; /* initial size, JS will shrink */
-    max-width: 100vw;
-    overflow: hidden;
-  }
-
-  a {
-    color: white;
-    text-decoration: none;
-  }
-</style>
-</head>
-<body>
-
-<div class="container">
-
-  <!-- YouTube SVG button -->
-  <a href="https://www.youtube.com/channel/UC63N1yWiGhzL2E9hcfFDJoQ">
-    <svg class="yt-button" viewBox="0 0 90 63" xmlns="http://www.w3.org/2000/svg">
-      <rect width="90" height="63" rx="12" fill="#FF0000"/>
-      <polygon points="36,18 63,31.5 36,45" fill="#FFFFFF"/>
-    </svg>
-  </a>
-
-  <!-- Title -->
-  <h1 id="title">
-    <a href="https://www.youtube.com/channel/UC63N1yWiGhzL2E9hcfFDJoQ">
-      FLORIDA PUNK ARCHIVIST
-    </a>
-  </h1>
-
-</div>
-
-<script>
-/* AUTO-SHRINK TEXT UNTIL IT FITS */
-function fitTitle() {
-  const title = document.getElementById("title");
-  let fontSize = 80;
-  title.style.fontSize = fontSize + "px";
-
-  while (title.scrollWidth > window.innerWidth - 20 && fontSize > 5) {
-    fontSize -= 1;
-    title.style.fontSize = fontSize + "px";
-  }
-}
-
-// Fit on load
-window.addEventListener("load", fitTitle);
-
-// Fit on resize
-window.addEventListener("resize", () => {
-  clearTimeout(window.fitTimeout);
-  window.fitTimeout = setTimeout(fitTitle, 100);
-});
-</script>
-
-</body>
-</html>
+11.20.2009	Miami, FL	Churchill's Pub	Mad Martigan, Furious Dudes	$5
+01.16.2010	Coral Gables, FL	Jada Cole	Arsenal88 (First Show), Furious Dudes + Others	FREE SHOW
+03.27.2010	Miami, FL	Kaffe Krystal	Tokyo Monster Control (CD Release Show)	$10
+04.02.2010	Miami, FL	Churchill's Pub	Jacob's Ladder, The Shoreline	$10
+05.22.2010	Kendall, FL	German American Club	Rock for Sandor Benefit Concert	$10
+05.27.2010	Miami, FL	Hot Topic (Dolphin Mall)	Acoustic Performance (7-9 pm)	FREE SHOW
+07.31.2010	Miami, FL	Churchills Pub	Glasseater, Arsenal88, Furious Dudes, Homestretch	$12
+08.14.2010	Miami, FL	The Shack Annex	HIT, PLAY! CD RELEASE SHOW with Arsenal88, Low Visibility, Jem Marie	$10
+12.04.2010	Miami, FL	Art Basel	Floyd The Artist	FREE
+01.15.2011	Dania Beach, FL	Monterey Club	Attention Radio, Ex-Norwegian, Jacob Jeffrie's Band	$5
+01.21.2011	Miami, FL	The Shack Annex	Morning War, Turnaround Sunshine, 10FM	FREE
+04.08.2011	Miami, FL	Churchill's Pub	Jacob's Ladder EP Release Show	$5
+10.21.2011	Miami, FL	Churchill's Pub	Hialeah Fest Day 1 with Humbert + Many More!	$5
+12.03.2011	Miami, FL	S Bar	Turnaround Sunshine, 2 other bands	$5
+12.09.2011	Fort Lauderdale, FL	Monterey Club	Fallen From The Sky, Break on Through, Turnaround Sunshine	$5
+12.31.2011	Lake Worth, FL	Propaganda	Dead To Me, Cobra Skulls, Routine Scheme, 2 Others	$15 Pre-Sales
+$20 Door
+01.06.2012	Fort Lauderdale, FL	Mikeshed's House Party	Askultura	VIP Only
+03.10.2012	Hialeah, FL	The Shack Annex	Fallen From The Sky, Arsenal88, Plains, Pool Party	$10
+04.27.2012	Miami, FL	Churchills Pub	Askultura, J. Valor Band, Others	$5
+06.16.2012	Miami, FL	Revolution Live Patio	The Bouncing Souls, The Menzingers	$25
+07.01.2012	Miami, FL	Miami Airport Convention Center
+6:30 p.m. in Conference Hall 200	Florida Supercon with Less Than Jake	Varies
+09.22.2012	Miami, FL	Churchill's Pub	Supersuckers, Middle Finger Mob + Others	$13 Adv
+$15 Door
+07.07.2013	Miami, FL	Miami Airport Convention Center	Green Jelly + Others	Prices Vary
