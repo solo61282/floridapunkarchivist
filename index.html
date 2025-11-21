@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Florida Punk Archivist</title>
 
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+
 <style>
   body {
     background: #000;
@@ -14,7 +17,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: Arial, sans-serif;
+    font-family: 'Bebas Neue', Arial, sans-serif;
     text-align: center;
   }
 
@@ -24,7 +27,7 @@
     align-items: center;
   }
 
-  /* YOUTUBE BUTTON (embedded SVG, always works) */
+  /* YouTube button */
   .yt-button {
     width: clamp(80px, 18vw, 160px);
     margin-bottom: 1.5rem;
@@ -34,12 +37,13 @@
     transform: scale(1.12);
   }
 
-  /* TEXT — starts large, JS will shrink it */
+  /* Title */
   h1 {
-    margin: 0;
     white-space: nowrap;
-    font-size: 80px; /* starting size (will be reduced if needed) */
+    margin: 0;
+    font-size: 80px; /* initial size, JS will shrink */
     max-width: 100vw;
+    overflow: hidden;
   }
 
   a {
@@ -52,7 +56,7 @@
 
 <div class="container">
 
-  <!-- YOUTUBE SVG BUTTON -->
+  <!-- YouTube SVG button -->
   <a href="https://www.youtube.com/channel/UC63N1yWiGhzL2E9hcfFDJoQ">
     <svg class="yt-button" viewBox="0 0 90 63" xmlns="http://www.w3.org/2000/svg">
       <rect width="90" height="63" rx="12" fill="#FF0000"/>
@@ -60,7 +64,7 @@
     </svg>
   </a>
 
-  <!-- TITLE -->
+  <!-- Title -->
   <h1 id="title">
     <a href="https://www.youtube.com/channel/UC63N1yWiGhzL2E9hcfFDJoQ">
       FLORIDA PUNK ARCHIVIST
@@ -70,14 +74,12 @@
 </div>
 
 <script>
-/* AUTO-SHRINK TEXT UNTIL IT FITS IN ONE LINE */
+/* AUTO-SHRINK TEXT UNTIL IT FITS */
 function fitTitle() {
   const title = document.getElementById("title");
-  let fontSize = 80; // starting size
-
+  let fontSize = 80;
   title.style.fontSize = fontSize + "px";
 
-  // shrink until it fits
   while (title.scrollWidth > window.innerWidth - 20 && fontSize > 5) {
     fontSize -= 1;
     title.style.fontSize = fontSize + "px";
@@ -87,7 +89,7 @@ function fitTitle() {
 // Fit on load
 window.addEventListener("load", fitTitle);
 
-// Fit on window resize (mobile rotation, etc.)
+// Fit on resize
 window.addEventListener("resize", () => {
   clearTimeout(window.fitTimeout);
   window.fitTimeout = setTimeout(fitTitle, 100);
