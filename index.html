@@ -1,26 +1,97 @@
-11.20.2009	Miami, FL	Churchill's Pub	Mad Martigan, Furious Dudes	$5
-01.16.2010	Coral Gables, FL	Jada Cole	Arsenal88 (First Show), Furious Dudes + Others	FREE SHOW
-03.27.2010	Miami, FL	Kaffe Krystal	Tokyo Monster Control (CD Release Show)	$10
-04.02.2010	Miami, FL	Churchill's Pub	Jacob's Ladder, The Shoreline	$10
-05.22.2010	Kendall, FL	German American Club	Rock for Sandor Benefit Concert	$10
-05.27.2010	Miami, FL	Hot Topic (Dolphin Mall)	Acoustic Performance (7-9 pm)	FREE SHOW
-07.31.2010	Miami, FL	Churchills Pub	Glasseater, Arsenal88, Furious Dudes, Homestretch	$12
-08.14.2010	Miami, FL	The Shack Annex	HIT, PLAY! CD RELEASE SHOW with Arsenal88, Low Visibility, Jem Marie	$10
-12.04.2010	Miami, FL	Art Basel	Floyd The Artist	FREE
-01.15.2011	Dania Beach, FL	Monterey Club	Attention Radio, Ex-Norwegian, Jacob Jeffrie's Band	$5
-01.21.2011	Miami, FL	The Shack Annex	Morning War, Turnaround Sunshine, 10FM	FREE
-04.08.2011	Miami, FL	Churchill's Pub	Jacob's Ladder EP Release Show	$5
-10.21.2011	Miami, FL	Churchill's Pub	Hialeah Fest Day 1 with Humbert + Many More!	$5
-12.03.2011	Miami, FL	S Bar	Turnaround Sunshine, 2 other bands	$5
-12.09.2011	Fort Lauderdale, FL	Monterey Club	Fallen From The Sky, Break on Through, Turnaround Sunshine	$5
-12.31.2011	Lake Worth, FL	Propaganda	Dead To Me, Cobra Skulls, Routine Scheme, 2 Others	$15 Pre-Sales
-$20 Door
-01.06.2012	Fort Lauderdale, FL	Mikeshed's House Party	Askultura	VIP Only
-03.10.2012	Hialeah, FL	The Shack Annex	Fallen From The Sky, Arsenal88, Plains, Pool Party	$10
-04.27.2012	Miami, FL	Churchills Pub	Askultura, J. Valor Band, Others	$5
-06.16.2012	Miami, FL	Revolution Live Patio	The Bouncing Souls, The Menzingers	$25
-07.01.2012	Miami, FL	Miami Airport Convention Center
-6:30 p.m. in Conference Hall 200	Florida Supercon with Less Than Jake	Varies
-09.22.2012	Miami, FL	Churchill's Pub	Supersuckers, Middle Finger Mob + Others	$13 Adv
-$15 Door
-07.07.2013	Miami, FL	Miami Airport Convention Center	Green Jelly + Others	Prices Vary
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Event Listings</title>
+
+<!-- TailwindCSS CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+/* Masonry-like layout for extra-large screens */
+@media (min-width: 1280px) {
+  .masonry {
+    column-count: 3;
+    column-gap: 1.5rem;
+  }
+  .masonry-item {
+    break-inside: avoid;
+    margin-bottom: 1.5rem;
+  }
+}
+</style>
+
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+<header class="bg-gray-900 text-white py-8 text-center shadow-lg">
+    <h1 class="text-4xl font-bold tracking-wide">Event Listings</h1>
+    <p class="text-gray-300 mt-2">Auto-Sorted • Fully Responsive • TailwindCSS</p>
+</header>
+
+<div class="max-w-6xl mx-auto p-6">
+    <div id="events" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:masonry"></div>
+</div>
+
+<script>
+// -------------------------
+// EVENT DATA (Edit freely)
+// -------------------------
+const events = [
+    { date: "11.20.2009", city: "Miami, FL", venue: "Churchill's Pub", lineup: "Mad Martigan, Furious Dudes", price: "$5" },
+    { date: "01.16.2010", city: "Coral Gables, FL", venue: "Jada Cole", lineup: "Arsenal88 (First Show), Furious Dudes + Others", price: "FREE SHOW" },
+    { date: "03.27.2010", city: "Miami, FL", venue: "Kaffe Krystal", lineup: "Tokyo Monster Control (CD Release Show)", price: "$10" },
+    { date: "04.02.2010", city: "Miami, FL", venue: "Churchill's Pub", lineup: "Jacob's Ladder, The Shoreline", price: "$10" },
+    { date: "05.22.2010", city: "Kendall, FL", venue: "German American Club", lineup: "Rock for Sandor Benefit Concert", price: "$10" },
+    { date: "05.27.2010", city: "Miami, FL", venue: "Hot Topic (Dolphin Mall)", lineup: "Acoustic Performance (7–9 pm)", price: "FREE SHOW" },
+    { date: "07.31.2010", city: "Miami, FL", venue: "Churchills Pub", lineup: "Glasseater, Arsenal88, Furious Dudes, Homestretch", price: "$12" },
+    { date: "08.14.2010", city: "Miami, FL", venue: "The Shack Annex", lineup: "HIT, PLAY! CD RELEASE SHOW, Arsenal88, Low Visibility, Jem Marie", price: "$10" },
+    { date: "12.04.2010", city: "Miami, FL", venue: "Art Basel", lineup: "Floyd The Artist", price: "FREE" },
+    { date: "01.15.2011", city: "Dania Beach, FL", venue: "Monterey Club", lineup: "Attention Radio, Ex-Norwegian, Jacob Jeffrie's Band", price: "$5" },
+    { date: "01.21.2011", city: "Miami, FL", venue: "The Shack Annex", lineup: "Morning War, Turnaround Sunshine, 10FM", price: "FREE" },
+    { date: "04.08.2011", city: "Miami, FL", venue: "Churchill's Pub", lineup: "Jacob's Ladder EP Release Show", price: "$5" },
+    { date: "10.21.2011", city: "Miami, FL", venue: "Churchill's Pub", lineup: "Hialeah Fest Day 1 with Humbert + Many More!", price: "$5" },
+    { date: "12.03.2011", city: "Miami, FL", venue: "S Bar", lineup: "Turnaround Sunshine, 2 other bands", price: "$5" },
+    { date: "12.09.2011", city: "Fort Lauderdale, FL", venue: "Monterey Club", lineup: "Fallen From The Sky, Break on Through, Turnaround Sunshine", price: "$5" },
+    { date: "12.31.2011", city: "Lake Worth, FL", venue: "Propaganda", lineup: "Dead To Me, Cobra Skulls, Routine Scheme, 2 Others", price: "$15 Presale / $20 Door" },
+    { date: "01.06.2012", city: "Fort Lauderdale, FL", venue: "Mikeshed's House Party", lineup: "Askultura", price: "VIP Only" },
+    { date: "03.10.2012", city: "Hialeah, FL", venue: "The Shack Annex", lineup: "Fallen From The Sky, Arsenal88, Plains, Pool Party", price: "$10" },
+    { date: "04.27.2012", city: "Miami, FL", venue: "Churchills Pub", lineup: "Askultura, J. Valor Band, Others", price: "$5" },
+    { date: "06.16.2012", city: "Miami, FL", venue: "Revolution Live Patio", lineup: "The Bouncing Souls, The Menzingers", price: "$25" },
+    { date: "07.01.2012", city: "Miami, FL", venue: "Miami Airport Convention Center", lineup: "Florida Supercon with Less Than Jake (6:30 pm – Hall 200)", price: "Varies" },
+    { date: "09.22.2012", city: "Miami, FL", venue: "Churchill's Pub", lineup: "Supersuckers, Middle Finger Mob + Others", price: "$13 Adv / $15 Door" },
+    { date: "07.07.2013", city: "Miami, FL", venue: "Miami Airport Convention Center", lineup: "Green Jelly + Others", price: "Prices Vary" }
+];
+
+// Convert MM.DD.YYYY → JS Date
+function parseDate(d) {
+    const [m, day, y] = d.split(".");
+    return new Date(`${y}-${m}-${day}`);
+}
+
+// Sort newest → oldest
+events.sort((a, b) => parseDate(b.date) - parseDate(a.date));
+
+// Render events
+const container = document.getElementById("events");
+
+events.forEach(ev => {
+    const card = document.createElement("div");
+    card.className =
+        "masonry-item bg-white rounded-xl shadow-md p-6 border border-gray-200 hover:shadow-xl transition-shadow duration-300";
+
+    card.innerHTML = `
+        <h3 class="text-xl font-bold mb-2">${ev.date} – ${ev.city}</h3>
+        <p class="mb-1"><span class="font-semibold">Venue:</span> ${ev.venue}</p>
+        <p class="mb-1"><span class="font-semibold">Lineup:</span> ${ev.lineup}</p>
+        <div class="inline-block mt-3 px-3 py-1 bg-gray-900 text-white rounded-full text-sm font-semibold">
+            ${ev.price}
+        </div>
+    `;
+    container.appendChild(card);
+});
+</script>
+
+</body>
+</html>
